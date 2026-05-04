@@ -1,0 +1,33 @@
+# Pyro API
+PYRO_BASE_URL=https://bsnlapigateway.pyrogroup.com/
+PYRO_API_KEY=A7B6C5D4E3F2G1
+PYRO_LOGIN_ID= 5554443330
+PYRO_PASSWORD=765430
+#PYRO_MPIN=your_mpin_for_recharge
+PYRO_SECRET_KEY=74163581669665286567
+
+# Oracle DB (BCD table only)
+ORACLE_USER=M01400120U1
+ORACLE_PASSWORD=hchf57ghFECjhs3
+ORACLE_DSN=10.201.222.66:1521/ecaf
+
+# Postgres DB (all other tables)
+PG_HOST=10.201.222.77
+PG_PORT=5432
+PG_DATABASE=postgres
+PG_USER=m01400120u1
+PG_PASSWORD="gqwdh3FEHHG6&w#dsbR1"
+PG_MIN_CONN=2
+PG_MAX_CONN=10
+
+# Deployment
+# Share with Pyro: {CALLBACK_BASE_URL}/callback/recharge
+CALLBACK_BASE_URL=https://mitra.bsnl.co.in/smpyro
+
+# Batch population schedule (24-hour)
+BATCH_POPULATION_HOUR=7
+BATCH_POPULATION_MINUTE=0
+ORACLE_BATCH_FETCH_SIZE=500
+
+# Recharge processing
+RECHARGE_BATCH_SIZE=500

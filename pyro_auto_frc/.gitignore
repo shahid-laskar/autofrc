@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+nginx/ssl/*.crt
+nginx/ssl/*.key
+nginx/ssl/*.pem
+*.log
+.DS_Store

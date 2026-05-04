@@ -1,0 +1,114 @@
+"""
+app/callback.py
+---------------
+POST /callback/recharge
+Receives async final result from Pyro. Always returns 200.
+
+BCD writeback on callback:
+  SUCCESS -> BCD: P
+  FAILURE -> BCD: F
+"""
+
+import asyncio
+import json
+import logging
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, HTTPException, Request
+
+from app.db.oracle import BCD_STATUS_F, BCD_STATUS_P, update_bcd_status
+from app.db.postgres import (
+    FLAG_FAILED, FLAG_SUCCESS,
+    async_find_row_by_pyro_trans_id,
+    async_insert_txn_log,
+    async_mark_as_failed,
+    async_mark_as_success,
+)
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+
+@router.post("/callback/recharge")
+async def recharge_callback(request: Request):
+    """
+    Callback URL to share with Pyro:
+        POST https://mitra.bsnl.co.in/smpyro/callback/recharge
+
+    Pyro POSTs plain JSON (already decrypted). Always return 200.
+    Lookup by data.transactionId -> pyro_trans_id in frc_pyro_request_data.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        raw = await request.body()
+        logger.error("Callback: invalid JSON: %s", raw[:200])
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+
+    logger.info("Callback received: %s", json.dumps(body)[:300])
+
+    data          = body.get("data", {})
+    status_code   = body.get("statusCode")
+    pyro_txn_id   = data.get("transactionId")
+    client_txn_id = data.get("clientTxnId")
+    received_at   = datetime.now(timezone.utc)
+
+    if not pyro_txn_id:
+        logger.error("Callback: missing transactionId: %s", body)
+        return {"received": True, "note": "missing transactionId"}
+
+    row = await async_find_row_by_pyro_trans_id(int(pyro_txn_id))
+    if not row:
+        logger.warning("Callback: no row for pyroTxnId=%s", pyro_txn_id)
+        return {"received": True, "note": "transaction not found"}
+
+    reqid        = row["reqid"]
+    caf          = row["caf_serial_no"]
+    gsmno        = row.get("gsmno", "")
+    batch_date   = row.get("batch_date")
+    current_flag = row["push_flag"]
+    body_text    = json.dumps(body)
+
+    # Idempotency guard
+    if current_flag in (FLAG_SUCCESS, FLAG_FAILED):
+        logger.info("Callback: reqid=%s already terminal (%s) -- ignored",
+                    reqid, current_flag)
+        return {"received": True, "note": "already processed"}
+
+    # Log to frc_txn_log
+    await async_insert_txn_log(
+        frc_reqid=reqid, caf_serial_no=caf, gsmno=gsmno,
+        batch_date=batch_date,
+        client_txn_id=str(client_txn_id) if client_txn_id else None,
+        api_stage="CALLBACK_RECV", api_endpoint=None, http_method=None,
+        attempt_no=1, request_headers=None, request_body=None,
+        response_http_code=200, response_body=body_text,
+        pyro_status_code=status_code, pyro_status_text=data.get("status"),
+        pyro_txn_id=int(pyro_txn_id),
+        call_started_at=received_at, call_ended_at=received_at, duration_ms=0,
+        is_success="Y" if status_code == 2000 else "N",
+        is_perm_failure="N",
+    )
+
+    if status_code == 2000 and data.get("status") == "SUCCESS":
+        balance_after = data.get("dealerBalanceAfter", 0.0)
+        await async_mark_as_success(reqid, body_text, balance_after, status_code)
+        # BCD: P = Processed/Success
+        await asyncio.to_thread(
+            update_bcd_status, caf, reqid, BCD_STATUS_P,
+            f"Recharge successful via callback. pyroTxnId={pyro_txn_id} "
+            f"gsmno={data.get('destMsisdn')} amount={data.get('amount')}"
+        )
+        logger.info("Callback SUCCESS: reqid=%s pyroTxnId=%s gsmno=%s amount=%s bal_after=%s",
+                    reqid, pyro_txn_id, data.get("destMsisdn"),
+                    data.get("amount"), balance_after)
+    else:
+        remarks = f"[{status_code}] {body.get('message', 'Callback failure')}"
+        await async_mark_as_failed(reqid, FLAG_FAILED, remarks, body_text, status_code)
+        # BCD: F = Failed
+        await asyncio.to_thread(
+            update_bcd_status, caf, reqid, BCD_STATUS_F, remarks
+        )
+        logger.warning("Callback FAILURE: reqid=%s remarks=%s", reqid, remarks)
+
+    return {"received": True}

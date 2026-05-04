@@ -1,0 +1,38 @@
+services:
+
+  # ── FastAPI application ────────────────────────────────────────────────────
+  frc-recharge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frc_recharge_service
+    restart: unless-stopped
+
+    # All secrets come from .env — never hardcoded here
+    env_file:
+      - .env
+
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    networks:
+      - frc_net
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+
+networks:
+  frc_net:
+    driver: bridge

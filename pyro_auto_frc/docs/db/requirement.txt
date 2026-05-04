@@ -1,0 +1,19 @@
+1. Only activated cases from BCD with HLR_FINAL_ACT_DATE not null is taken for processing
+
+ 2. The following fields from Postgres Table (ie the correspondig table based on whethe ekyc, dkyc or skyc) is mandatory
+           frc_plan_name        frc_plan_code         frc_category_code         frc_ctopup_number        frc_ctopup_number_mpin            
+           Presence of these fields with non-null value indicates that the number has an FRC    
+           As of now there is no explicit field from APP which says that this number needs FRC.   Presence of above five fields is the indicator for FRC   
+3. The request data that is put in the FRC_REQUEST_DATA have the following elements                      
+VENDORID = ctopData.pos_unique_code?.Trim(),                    
+VENDORMSISDN = ctopData.ctopupno?.Trim(),                    // REQID is generated                    
+GSMNO = bcdData.GSMNUMBER?.Trim(),                    
+REQDATE = cosBcdData.live_photo_time,                    
+MPIN = encryptedMpin,                    
+FRCAMT = frcPlanData.frc_amount,                    
+CSCCODE = bcdData.DE_CSCCODE?.Trim(),                     
+EDATE = bcdData.HLR_FINAL_ACT_DATE,                    
+CIRCLE_CODE = circleCodeStr,                    
+IN_STATUS = "C",                    PYRO_STATUS = "N",                    SS_STATUS = "N",                    MPIN_LENGTH = mpinLength,                    PUSH_FLAG = "N",                    PUSH_DATE = pushDate,                    CAF_SERIAL_NO = bcdData.CAF_SERIAL_NO                     
+4. The fields required to relate to tables like ctopup master, frc_plan_table     etc are also mandatory . Assess the data items required by new API .     
+Sugestions    - Maintain a transaction-log with request and response data API interaction statuses 
