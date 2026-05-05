@@ -2,14 +2,18 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     # Pyro API
     pyro_base_url: str
     pyro_api_key: str
     pyro_login_id: str
     pyro_password: str
-    pyro_mpin: str
+    # pyro_mpin: str
     pyro_secret_key: str
 
     # Oracle DB (BCD table only)
@@ -29,7 +33,8 @@ class Settings(BaseSettings):
     # Deployment
     callback_base_url: str
 
-    # Batch population schedule
+    # Scheduler
+    enable_scheduler: bool = True
     batch_population_hour: int = 7
     batch_population_minute: int = 0
     oracle_batch_fetch_size: int = 500

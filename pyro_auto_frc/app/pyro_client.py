@@ -5,13 +5,13 @@ HTTP client for all outbound Pyro API calls.
 
 Encryption summary (confirmed via Postman testing):
   - REQUEST bodies  : encrypted (3DES-ECB, Base64 out)   ← encrypt() before POST
-  - RESPONSE bodies : encrypted (3DES-ECB, Base64 in)    ← decrypt() after receive
+  - RESPONSE bodies : plain JSON in current Pyro environment; encrypted fallback supported
   - CALLBACK bodies : plain JSON posted by Pyro           ← no decryption needed
 
 This applies to:
-  - POST /epin-vendor-api/recharge          (request encrypted, response encrypted)
-  - POST /epin-vendor-api/transaction-status (request encrypted, response encrypted)
-  - POST /auth-api/authentication            (request encrypted, response encrypted)
+  - POST /epin-vendor-api/recharge          (request encrypted, response parsed JSON-first)
+  - POST /epin-vendor-api/transaction-status (request encrypted, response parsed JSON-first)
+  - POST /auth-api/authentication            (request encrypted, response parsed JSON-first)
   - GET  /auth-api/refresh-access-token     (no body, response plain JSON)
   - GET  /auth-api/generate-action-token    (no body, response plain JSON)
 """
@@ -42,34 +42,27 @@ def classify_failure(status_code: int) -> str:
     return "F" if status_code in PERMANENT_FAILURE_CODES else "E"
 
 
-def _decrypt_response(resp: httpx.Response, label: str) -> dict:
+def _parse_pyro_response(resp: httpx.Response, label: str) -> dict:
     """
-    Decrypt a Pyro API response body (3DES-ECB Base64) and parse as JSON.
+    Parse a Pyro API response.
 
-    Pyro returns the encrypted Base64 string as the raw response body —
-    NOT wrapped in JSON. We decrypt it first, then JSON-parse the result.
-
-    Mirrors the Postman test script:
-        const encryptedResponse = pm.response.text();
-        const decrypted = decrypt(encryptedResponse, secret_key);
-        const res = JSON.parse(decrypted);
-
-    Falls back to attempting plain JSON parse if decryption fails,
-    in case Pyro changes behaviour on error responses.
+    The current Pyro environment returns plain JSON. Encrypted Base64 parsing is
+    kept as a fallback for environments that still use encrypted responses.
     """
     raw = resp.text.strip()
     logger.debug("%s raw response: %s", label, raw[:200])
 
     try:
+        return resp.json()
+    except Exception as json_err:
+        logger.debug("%s: plain JSON parse failed (%s); trying encrypted response", label, json_err)
+
+    try:
         decrypted = decrypt(raw, settings.pyro_secret_key)
         return json.loads(decrypted)
     except Exception as dec_err:
-        logger.warning("%s: decryption failed (%s) — trying plain JSON fallback", label, dec_err)
-        try:
-            return resp.json()
-        except Exception:
-            logger.error("%s: both decrypt and plain JSON parse failed. Raw: %s", label, raw[:300])
-            return {"statusCode": -1, "status": "ERROR", "message": f"Response parse failed: {dec_err}"}
+        logger.error("%s: both plain JSON and decrypt parse failed. Raw: %s", label, raw[:300])
+        return {"statusCode": -1, "status": "ERROR", "message": f"Response parse failed: {dec_err}"}
 
 
 async def recharge(
@@ -113,7 +106,7 @@ async def recharge(
         async with httpx.AsyncClient(verify=True, timeout=30.0) as client:
             resp = await client.post(url, headers=headers, content=encrypted_body)
         
-        data = _decrypt_response(resp, f"recharge clientTxnId={client_txn_id}")
+        data = _parse_pyro_response(resp, f"recharge clientTxnId={client_txn_id}")
 
         logger.info("Recharge clientTxnId=%s: statusCode=%s", client_txn_id, data.get("statusCode"))
         return data
@@ -154,8 +147,7 @@ async def check_transaction_status(pyro_trans_id: str, client_txn_id: str) -> di
         async with httpx.AsyncClient(verify=True, timeout=30.0) as client:
             resp = await client.post(url, headers=headers, content=encrypted_body)
 
-        # Decrypt response — same pattern as recharge endpoint
-        data = _decrypt_response(resp, f"status-check clientTxnId={client_txn_id}")
+        data = _parse_pyro_response(resp, f"status-check clientTxnId={client_txn_id}")
 
         logger.info("Status check clientTxnId=%s pyroTxnId=%s: statusCode=%s",
                     client_txn_id, pyro_trans_id, data.get("statusCode"))

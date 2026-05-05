@@ -1,14 +1,3 @@
-"""
-app/callback.py
----------------
-POST /callback/recharge
-Receives async final result from Pyro. Always returns 200.
-
-BCD writeback on callback:
-  SUCCESS -> BCD: P
-  FAILURE -> BCD: F
-"""
-
 import asyncio
 import json
 import logging
@@ -32,11 +21,9 @@ router = APIRouter()
 @router.post("/callback/recharge")
 async def recharge_callback(request: Request):
     """
-    Callback URL to share with Pyro:
+    Callback URL for Pyro:
         POST https://mitra.bsnl.co.in/smpyro/callback/recharge
-
-    Pyro POSTs plain JSON (already decrypted). Always return 200.
-    Lookup by data.transactionId -> pyro_trans_id in frc_pyro_request_data.
+    
     """
     try:
         body = await request.json()
@@ -91,8 +78,9 @@ async def recharge_callback(request: Request):
     )
 
     if status_code == 2000 and data.get("status") == "SUCCESS":
+        balance_before = data.get("dealerBalanceBefore", 0.0)
         balance_after = data.get("dealerBalanceAfter", 0.0)
-        await async_mark_as_success(reqid, body_text, balance_after, status_code)
+        await async_mark_as_success(reqid, body_text, balance_before, balance_after, status_code)
         # BCD: P = Processed/Success
         await asyncio.to_thread(
             update_bcd_status, caf, reqid, BCD_STATUS_P,

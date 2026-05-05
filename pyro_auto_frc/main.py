@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.auth.token_manager import token_manager
-from app.api.callback import router as callback_router
+from app.callback import router as callback_router
 from app.config import settings
 from app.db.oracle import close_oracle_pool, init_oracle_pool
 from app.db.postgres import close_pg_pool, init_pg_pool
@@ -25,19 +25,24 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    scheduler_started = False
     logger.info("FRC Pyro Recharge Service -- starting up")
     logger.info("  Pyro URL      : %s", settings.pyro_base_url)
-    logger.info("  Callback URL  : %s/callback/recharge", settings.callback_base_url)
-    logger.info("  Batch pop     : %02d:%02d daily",
-                settings.batch_population_hour, settings.batch_population_minute)
+    logger.info("  Callback URL  : %s/callback/recharge", settings.callback_base_url)    
+    logger.info("  Scheduler     : %s", "enabled" if settings.enable_scheduler else "disabled")
     init_pg_pool()
     init_oracle_pool()
     await token_manager.authenticate()
-    start_scheduler()
+    if settings.enable_scheduler:
+        start_scheduler()
+        scheduler_started = True
+    else:
+        logger.info("Scheduler disabled by ENABLE_SCHEDULER=false")
     logger.info("FRC Pyro Recharge Service -- ready")
     yield
     logger.info("FRC Pyro Recharge Service -- shutting down")
-    stop_scheduler()
+    if scheduler_started:
+        stop_scheduler()
     close_oracle_pool()
     close_pg_pool()
     logger.info("Shutdown complete")
@@ -83,7 +88,7 @@ async def trigger_batch_population():
 @app.post("/admin/trigger-recharge", tags=["Admin"])
 async def trigger_recharge():
     """Manually trigger recharge dispatch."""
-    from app.recharge.processor import process_pending_recharges
+    from app.processor import process_pending_recharges
     summary = await process_pending_recharges(batch_size=settings.recharge_batch_size)
     return {"triggered": True, "summary": summary}
 

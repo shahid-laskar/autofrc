@@ -3,7 +3,7 @@ app/auth/token_manager.py
 -------------------------
 Singleton managing Pyro API tokens.
 
-Authentication:   POST /auth-api/authentication        (body encrypted, response encrypted)
+Authentication:   POST /auth-api/authentication        (body encrypted, response plain JSON)
 Refresh:          GET  /auth-api/refresh-access-token  (no body, response plain JSON)
 Action token:     GET  /auth-api/generate-action-token (no body, response plain JSON)
 
@@ -53,28 +53,28 @@ class PyroAuthService:
             return False
         return self._access_token_exp > datetime.now(timezone.utc).timestamp() + 60
 
-    def _parse_encrypted_response(self, resp: httpx.Response, label: str) -> dict:
+    def _parse_pyro_response(self, resp: httpx.Response, label: str) -> dict:
         """
-        Decrypt a Pyro response body (3DES-ECB Base64) and parse as JSON.
-        Falls back to plain JSON if decryption fails (e.g. gateway errors).
+        Parse a Pyro response as plain JSON first, with encrypted fallback.
         """
         raw = resp.text.strip()
         try:
+            return resp.json()
+        except Exception as json_err:
+            logger.debug("%s: plain JSON parse failed (%s); trying encrypted response", label, json_err)
+
+        try:
             return json.loads(decrypt(raw, settings.pyro_secret_key))
         except Exception as dec_err:
-            logger.warning("%s: decrypt failed (%s) — trying plain JSON", label, dec_err)
-            try:
-                return resp.json()
-            except Exception:
-                logger.error("%s: both decrypt and plain JSON failed. Raw: %s", label, raw[:200])
-                return {"statusCode": -1, "message": f"Response parse failed: {dec_err}"}
+            logger.error("%s: both plain JSON and decrypt parse failed. Raw: %s", label, raw[:200])
+            return {"statusCode": -1, "message": f"Response parse failed: {dec_err}"}
 
     # ── Public API ─────────────────────────────────────────────────────────────
 
     async def authenticate(self) -> bool:
         """
         POST /auth-api/authentication
-        Request encrypted. Response encrypted.
+        Request encrypted. Response is plain JSON in the current Pyro environment.
         Called on startup and daily by scheduler.
         """
         body = {"loginId": settings.pyro_login_id, "password": settings.pyro_password}
@@ -87,7 +87,7 @@ class PyroAuthService:
                 content=encrypted_body,
             )
 
-        data = self._parse_encrypted_response(resp, "AUTH")
+        data = self._parse_pyro_response(resp, "AUTH")
 
         if data.get("statusCode") == 2000:
             d = data["data"]

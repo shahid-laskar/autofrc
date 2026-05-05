@@ -1,16 +1,6 @@
-"""
-app/scheduler.py
-----------------
-Four APScheduler jobs:
-  1. daily_auth       -- 00:05 daily (CronTrigger — clock time matters)
-  2. batch_population -- every 1 hour
-  3. recharge_batch   -- every 30 min after previous run completes
-  4. status_check     -- every 5 min after previous run completes
-"""
-
 import asyncio
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -64,7 +54,9 @@ async def _status_check_job():
 
 
 def start_scheduler():
-    # ── Daily re-auth (CronTrigger — must run at specific clock time) ──────────
+    now = datetime.now(timezone.utc)   
+
+    # ── Daily re-auth (CronTrigger — must fire at specific wall-clock time) ────
     scheduler.add_job(
         _daily_auth_job,
         CronTrigger(hour=0, minute=5),
@@ -74,30 +66,30 @@ def start_scheduler():
         coalesce=True,
     )
 
-    # ── Batch population (every 1 hour from app start) ─────────────────────────
     scheduler.add_job(
         _batch_population_job,
         IntervalTrigger(hours=1),
         id="batch_population",
         replace_existing=True,
-        max_instances=1,        # never overlap — two batch runs at once would
-        coalesce=True,          # duplicate Oracle fetches and Postgres inserts
+        max_instances=1,
+        coalesce=True,
         misfire_grace_time=120,
-        next_run_time=datetime.now(),   # run immediately on startup
+        next_run_time=now,      
     )
 
-    # ── Recharge pusher (30 min after previous run completes) ──────────────────
+   
     scheduler.add_job(
         _recharge_job,
         IntervalTrigger(minutes=30),
         id="recharge_batch",
         replace_existing=True,
-        max_instances=1,        # never overlap — same rows could be double-pushed
+        max_instances=1,
         coalesce=True,
         misfire_grace_time=60,
+        next_run_time=now,      # pick up any rows left over from before restart
     )
 
-    # ── Status check (5 min after previous run completes) ──────────────────────
+    # ── Status check (every 5 min) ─────────────────────────────────────────────
     scheduler.add_job(
         _status_check_job,
         IntervalTrigger(minutes=5),
@@ -111,10 +103,10 @@ def start_scheduler():
     scheduler.start()
     logger.info(
         "Scheduler started -- "
-        "batch_pop: every 1hr (immediate) | "
-        "recharge: every 30min | "
-        "status: every 5min | "
-        "auth: 00:05 daily"
+        "batch_pop: every 1hr (immediate on startup) | "
+        "recharge: every 30min (immediate on startup) | "
+        "status_check: every 5min | "
+        "daily_auth: 00:05"
     )
 
 

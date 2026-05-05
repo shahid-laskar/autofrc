@@ -22,7 +22,10 @@ import logging
 from contextlib import contextmanager
 from typing import Generator, List, Optional
 
-import cx_Oracle
+try:
+    import oracledb as cx_Oracle
+except ImportError:  # pragma: no cover - fallback for older deployments
+    import cx_Oracle
 
 from app.config import settings
 
@@ -35,7 +38,7 @@ BCD_STATUS_NP = "NP"
 BCD_STATUS_RQ = "RQ"
 BCD_STATUS_W  = "W"
 BCD_STATUS_NR = "NR"
-BCD_STATUS_P  = "P"   # Success -- confirm exact code with team
+BCD_STATUS_P  = "P"   # Success 
 BCD_STATUS_ID = "ID"  # Invalid data permanent failure
 BCD_STATUS_F  = "F"   # General failure
 
@@ -85,11 +88,8 @@ def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
     """
     Fetch BCD records eligible for FRC recharge.
 
-    Removed filters:
-      - ACTIVATION_STATUS = 'A'  (always NULL -- unusable)
-      - KYC_MODE = 'EKYC'        (always NULL -- routing done in Postgres)
-
     Active filters:
+        - ACTIVATION_STATUS = 'C'           (activated)
       - HLR_FINAL_ACT_DATE IS NOT NULL  (activation proxy)
       - FRC_FLOW_STATUS = 'NP'           (primary idempotency guard)
       - FRC_REQID IS NULL                (secondary guard)
@@ -102,7 +102,8 @@ def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
             CIRCLE_CODE,
             HLR_FINAL_ACT_DATE
         FROM CAF_ADMIN.BCD
-        WHERE HLR_FINAL_ACT_DATE IS NOT NULL
+        WHERE ACTIVATION_STATUS  = 'C' 
+          AND HLR_FINAL_ACT_DATE IS NOT NULL
           AND FRC_FLOW_STATUS    = :status_np
           AND FRC_REQID          IS NULL
           AND ROWNUM             <= :fetch_size

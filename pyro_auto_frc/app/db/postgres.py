@@ -1,19 +1,3 @@
-"""
-app/db/postgres.py
-------------------
-Postgres psycopg2 pool and all DB operations.
-
-READ : cos_bcd, ctop_master, frc_plan_table (batch population sources)
-WRITE: frc_pyro_request_data (state machine), frc_txn_log (audit)
-
-Key design decisions:
-  - Primary idempotency guard is Oracle BCD (FRC_FLOW_STATUS = NP/RQ)
-  - Unique constraint (batch_date, caf_serial_no) is DB-level safety net only
-  - bulk_insert_frc_requests returns (reqid, caf_serial_no) pairs for BCD writeback
-  - cos_bcd queried directly for all GSMs (kyc_mode always NULL in Oracle BCD)
-  - No kyc routing needed: cos_bcd_dkyc/skyc lack frc_ columns
-"""
-
 import asyncio
 import logging
 from contextlib import contextmanager
@@ -37,13 +21,13 @@ FLAG_SUCCESS = "Y"
 FLAG_FAILED  = "F"
 FLAG_RETRY   = "E"
 
-# Pyro codes -> permanent failure (no retry)
+# Pyro codes -> permanent failure (no auto-retry)
 PERMANENT_FAILURE_CODES = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
-# Subset: invalid data failures (maps to BCD status ID)
+# Subset: invalid data errors -> BCD status 'ID'
 INVALID_DATA_CODES      = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
 
 
-# Pool lifecycle
+# ── Pool lifecycle ─────────────────────────────────────────────────────────────
 
 def init_pg_pool() -> None:
     global _pool
@@ -81,75 +65,98 @@ def get_pg_conn() -> Generator:
         _pool.putconn(conn)
 
 
-# Source data queries (batch population)
+# ── Source data queries (batch population) ────────────────────────────────────
 
 def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
-    """
-    Fetch FRC indicator fields from cos_bcd for a list of GSM numbers,
-    joined with ctop_master (vendor details) and frc_plan_table (amount).
-
-    Only returns rows where ALL FIVE FRC indicator fields are non-null.
-    kyc_mode routing removed: cos_bcd is queried for all GSMs since it is
-    the only table with frc_ columns. DKYC/SKYC tables will be unioned here
-    when they gain frc_ columns.
-
-    circle_code '9999' in frc_plan_table = applies to all circles.
-    """
+   
     if not gsm_numbers:
         return []
 
     sql = """
+        -- ── EKYC branch (cos_bcd) ─────────────────────────────────────────────
         SELECT
             cb.gsmnumber,
             cb.caf_serial_no,
             cb.de_csccode,
             cb.circle_code,
-            cb.live_photo_time,
-            cb.frc_plan_name,
-            cb.frc_plan_code,
-            cb.frc_category_code,
-            cb.frc_ctopup_number,
-            cb.frc_ctopup_number_mpin,
-            cm.pos_unique_code   AS vendorid,
-            cm.ctopupno          AS vendormsisdn,
-            fp.frc_amount        AS frcamt
+            cb.live_photo_time                  AS live_photo_time,
+            cb.frc_plan_name                    AS frc_plan_name,
+            cb.frc_plan_code                    AS frc_plan_code,
+            cb.frc_category_code                AS frc_category_code,
+            fp.frc_amount                       AS frcamt,
+            cb.frc_ctopup_number                AS ctopup_number,
+            cb.frc_ctopup_number_mpin           AS mpin_raw,
+            cm.pos_unique_code                  AS vendorid,
+            cm.ctopupno                         AS vendormsisdn,
+            'EKYC'                              AS kyc_mode
         FROM public.cos_bcd cb
-
         JOIN public.ctop_master cm
             ON cm.ctopupno = cb.frc_ctopup_number
-
         JOIN public.frc_plan_table fp
             ON fp.plan_code = cb.frc_plan_code
-           AND (fp.circle_code = cb.circle_code::TEXT
-                OR fp.circle_code = '9999')
+           AND (fp.circle_code = cb.circle_code::TEXT OR fp.circle_code = '9999')
            AND (fp.end_date IS NULL OR fp.end_date >= CURRENT_DATE)
-
-        WHERE cb.gsmnumber = ANY(%s)
+        WHERE cb.gsmnumber = ANY(%(gsms)s)
           AND cb.frc_plan_name          IS NOT NULL
           AND cb.frc_plan_code          IS NOT NULL
           AND cb.frc_category_code      IS NOT NULL
           AND cb.frc_ctopup_number      IS NOT NULL
           AND cb.frc_ctopup_number_mpin IS NOT NULL
+
+        UNION ALL
+
+        -- ── DKYC branch (cos_bcd_dkyc) ────────────────────────────────────────
+        -- Differences vs EKYC:
+        --   live_photo_time  <- customer_photo_time
+        --   ctopup_number    <- parent_ctopup_number
+        --   mpin_raw         <- mpin  (stored directly in table)
+        --   plan join        <- plan_name = tariff_plan  (not plan_code)
+        --   circle match     <- exact only  (no '9999' fallback)
+        --   frc_plan_code    <- fp.plan_code  (from plan table, not in dkyc table)
+        --   frc_category_code <- fp.category_code  (from plan table)
+        SELECT
+            cb.gsmnumber,
+            cb.caf_serial_no,
+            cb.de_csccode,
+            cb.circle_code,
+            cb.customer_photo_time              AS live_photo_time,
+            fp.plan_name                        AS frc_plan_name,
+            fp.plan_code                        AS frc_plan_code,
+            fp.category_code                    AS frc_category_code,
+            fp.frc_amount                       AS frcamt,
+            cb.parent_ctopup_number             AS ctopup_number,
+            cb.mpin                             AS mpin_raw,
+            cm.pos_unique_code                  AS vendorid,
+            cm.ctopupno                         AS vendormsisdn,
+            'DKYC'                              AS kyc_mode
+        FROM public.cos_bcd_dkyc cb
+        JOIN public.ctop_master cm
+            ON cm.ctopupno = cb.parent_ctopup_number
+        JOIN public.frc_plan_table fp
+            ON fp.plan_name  = cb.tariff_plan
+           AND fp.circle_code = cb.circle_code::TEXT
+           AND (fp.end_date IS NULL OR fp.end_date >= CURRENT_DATE)
+        WHERE cb.gsmnumber = ANY(%(gsms)s)
+          AND cb.tariff_plan            IS NOT NULL
+          AND cb.parent_ctopup_number   IS NOT NULL
+          AND cb.mpin                   IS NOT NULL
     """
     with get_pg_conn() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            cur.execute(sql, (gsm_numbers,))
+            cur.execute(sql, {"gsms": gsm_numbers})
             rows = [dict(r) for r in cur.fetchall()]
 
-    logger.debug("cos_bcd join: %d/%d GSMs have complete FRC data",
-                 len(rows), len(gsm_numbers))
+    ekyc_count = sum(1 for r in rows if r["kyc_mode"] == "EKYC")
+    dkyc_count = sum(1 for r in rows if r["kyc_mode"] == "DKYC")
+    logger.info(
+        "cos_bcd join: %d/%d GSMs matched (EKYC=%d DKYC=%d)",
+        len(rows), len(gsm_numbers), ekyc_count, dkyc_count,
+    )
     return rows
 
 
 def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
-    """
-    Bulk insert rows into frc_pyro_request_data.
-    Uses INSERT ... ON CONFLICT DO NOTHING (safety net for unique constraint).
-    Primary idempotency is guaranteed by Oracle BCD FRC_FLOW_STATUS guard.
-
-    Returns list of {"caf_serial_no": str, "reqid": int} for BCD writeback.
-    Uses RETURNING to get the DB-assigned reqid for each inserted row.
-    """
+    
     if not rows:
         return []
 
@@ -160,6 +167,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             frc_plan_name, frc_plan_code, frc_category_code, frcamt,
             ctopup_number, vendormsisdn, vendorid,
             mpin, mpin_length,
+            kyc_mode,
             in_status, pyro_status, push_flag,
             batch_date, created_at
         ) VALUES (
@@ -168,6 +176,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             %(frc_plan_name)s, %(frc_plan_code)s, %(frc_category_code)s, %(frcamt)s,
             %(ctopup_number)s, %(vendormsisdn)s, %(vendorid)s,
             %(mpin)s, %(mpin_length)s,
+            %(kyc_mode)s,
             'C', 'N', 'N',
             CURRENT_DATE, CURRENT_TIMESTAMP
         )
@@ -191,23 +200,18 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
     return inserted_pairs
 
 
-# Recharge state machine
+# ── Recharge state machine ─────────────────────────────────────────────────────
 
 def fetch_pending_rows(batch_size: int = 500) -> List[dict]:
-    """
-    Fetch rows ready for Pyro recharge submission.
-    Includes fresh (N) and retry (E) rows.
-    Excludes rows that have exceeded max_retries.
-    """
     sql = """
         SELECT
-            reqid, caf_serial_no, gsmno, batch_date,
+            reqid, caf_serial_no, gsmno, batch_date, kyc_mode,
             vendormsisdn, ctopup_number, frcamt, mpin, mpin_length,
             push_flag, retry_count, max_retries, client_txn_id
         FROM public.frc_pyro_request_data
-        WHERE in_status    = 'C'
-          AND push_flag    IN ('N', 'E')
-          AND retry_count  <= max_retries
+        WHERE in_status   = 'C'
+          AND push_flag   IN ('N', 'E')
+          AND retry_count <= max_retries
         ORDER BY created_at ASC
         LIMIT %s
     """
@@ -219,7 +223,6 @@ def fetch_pending_rows(batch_size: int = 500) -> List[dict]:
 
 def mark_as_pushed(reqid: int, pyro_trans_id: int, response_text: str,
                    msg2pyro: str, initial_statuscode: int) -> None:
-    """Set push_flag='P' after successful Pyro submission."""
     client_txn_id = str(reqid).zfill(5)[:15]
     sql = """
         UPDATE public.frc_pyro_request_data
@@ -242,9 +245,8 @@ def mark_as_pushed(reqid: int, pyro_trans_id: int, response_text: str,
                               msg2pyro, response_text, client_txn_id, reqid))
 
 
-def mark_as_success(reqid: int, response_text: str,
+def mark_as_success(reqid: int, response_text: str,balance_before: float,
                     balance_after: float, final_statuscode: int) -> None:
-    """Set push_flag='Y' on confirmed success."""
     sql = """
         UPDATE public.frc_pyro_request_data
         SET
@@ -254,6 +256,7 @@ def mark_as_success(reqid: int, response_text: str,
             pyro_final_statuscode   = %s,
             completed_at            = CURRENT_TIMESTAMP,
             callback_received_at    = CURRENT_TIMESTAMP,
+            dealer_bal_before       = %s,
             dealer_bal_after        = %s,
             msg_aftertr             = %s,
             replyrecvd_date         = CURRENT_TIMESTAMP,
@@ -262,16 +265,12 @@ def mark_as_success(reqid: int, response_text: str,
     """
     with get_pg_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql, (final_statuscode, balance_after, response_text, reqid))
+            cur.execute(sql, (final_statuscode, balance_before,balance_after, response_text, reqid))
 
 
 def mark_as_failed(reqid: int, push_flag: str, remarks: str,
                    response_text: Optional[str] = None,
                    final_statuscode: Optional[int] = None) -> None:
-    """
-    Set push_flag to FLAG_FAILED ('F') or FLAG_RETRY ('E').
-    Increments retry_count only for transient (E) cases.
-    """
     is_permanent = (push_flag == FLAG_FAILED)
     sql = """
         UPDATE public.frc_pyro_request_data
@@ -297,14 +296,11 @@ def mark_as_failed(reqid: int, push_flag: str, remarks: str,
 
 
 def fetch_pushed_rows_for_status_check() -> List[dict]:
-    """
-    Rows submitted to Pyro (push_flag=P) with no callback, pushed 2-60 min ago.
-    status_check_eligible_at is auto-set by DB trigger = submitted_at + 45 seconds.
-    """
     sql = """
         SELECT
             reqid, pyro_trans_id, client_txn_id,
-            gsmno, caf_serial_no, batch_date
+            gsmno, caf_serial_no, batch_date,
+            status_check_count
         FROM public.frc_pyro_request_data
         WHERE push_flag = 'P'
           AND status_check_eligible_at <= CURRENT_TIMESTAMP
@@ -343,7 +339,7 @@ def find_row_by_pyro_trans_id(pyro_trans_id: int) -> Optional[dict]:
             return dict(row) if row else None
 
 
-# Transaction log
+# ── Transaction log ────────────────────────────────────────────────────────────
 
 def insert_txn_log(
     frc_reqid, caf_serial_no, gsmno, batch_date, client_txn_id,
@@ -379,19 +375,23 @@ def insert_txn_log(
                      frc_reqid, api_stage, exc)
 
 
-# Async wrappers
+# ── Async wrappers ─────────────────────────────────────────────────────────────
 
 async def async_fetch_pending_rows(batch_size):
     return await asyncio.to_thread(fetch_pending_rows, batch_size)
 
 async def async_mark_as_pushed(reqid, pyro_trans_id, response_text, msg2pyro, sc):
-    await asyncio.to_thread(mark_as_pushed, reqid, pyro_trans_id, response_text, msg2pyro, sc)
+    await asyncio.to_thread(mark_as_pushed, reqid, pyro_trans_id,
+                            response_text, msg2pyro, sc)
 
 async def async_mark_as_success(reqid, response_text, balance_after, final_statuscode):
-    await asyncio.to_thread(mark_as_success, reqid, response_text, balance_after, final_statuscode)
+    await asyncio.to_thread(mark_as_success, reqid, response_text,
+                            balance_after, final_statuscode)
 
-async def async_mark_as_failed(reqid, push_flag, remarks, response_text=None, final_statuscode=None):
-    await asyncio.to_thread(mark_as_failed, reqid, push_flag, remarks, response_text, final_statuscode)
+async def async_mark_as_failed(reqid, push_flag, remarks,
+                                response_text=None, final_statuscode=None):
+    await asyncio.to_thread(mark_as_failed, reqid, push_flag, remarks,
+                            response_text, final_statuscode)
 
 async def async_find_row_by_pyro_trans_id(pyro_trans_id):
     return await asyncio.to_thread(find_row_by_pyro_trans_id, pyro_trans_id)

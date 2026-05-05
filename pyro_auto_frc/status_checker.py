@@ -21,7 +21,7 @@ from app.db.oracle import (
     BCD_STATUS_P,
     update_bcd_status,
 )
-from app.db.postgres import (
+from pyro_auto_frc.app.db.postgres import (
     FLAG_FAILED,
     FLAG_RETRY,
     async_fetch_pushed_rows_for_status_check,
@@ -47,8 +47,9 @@ async def run_status_checks() -> dict:
     for row in rows:
         reqid         = row["reqid"]
         pyro_trans_id = row["pyro_trans_id"]
-        client_txn_id = row["client_txn_id"] or str(reqid).zfill(5)[:15]
         caf           = row["caf_serial_no"]
+        gsmno         = row["gsmno"]
+        batch_date    = row["batch_date"]
 
         await async_update_status_check_attempt(reqid)
 
@@ -60,8 +61,11 @@ async def run_status_checks() -> dict:
             )
 
         response = await check_transaction_status(
+            reqid=reqid,
+            caf_serial_no=caf,
+            gsmno=gsmno,
+            batch_date=batch_date,
             pyro_trans_id=str(pyro_trans_id),
-            client_txn_id=client_txn_id,
         )
 
         status_code   = response.get("statusCode")

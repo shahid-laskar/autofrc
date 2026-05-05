@@ -91,19 +91,21 @@ body is encrypted and must be decrypted after receiving.
 Understanding this flow is the most important thing. Everything else in this document
 explains how each step is implemented.
 
-### Phase 1 — Batch Population (runs daily at 07:00)
+### Phase 1 — Batch Population (runs every 1 hour )
 
 ```
 STEP 1: Query Oracle BCD table
-        Filter: HLR_FINAL_ACT_DATE IS NOT NULL   ← subscriber is activated
+        Filter: ACTIVATION_STATUS ='C' ← subscriber is activated
+                HLR_FINAL_ACT_DATE IS NOT NULL   ← subscriber is activated
                 FRC_FLOW_STATUS = 'NP'            ← not yet processed
                 FRC_REQID IS NULL                 ← no prior FRC request
         Result: list of GSM numbers + CAF serial numbers
 
-STEP 2: For each GSM number, query Postgres cos_bcd
+STEP 2: For each GSM number, query Postgres cos_bcd, cos_bcd_dkyc
         Check: frc_plan_name, frc_plan_code, frc_category_code,
                frc_ctopup_number, frc_ctopup_number_mpin are ALL non-null
         If any is null → skip (this subscriber doesn't need FRC)
+        in cos_bcd_dkyc, there is no plan_code ??
         Also joins: ctop_master   → get vendorid, vendormsisdn
                     frc_plan_table → get frcamt (the amount to recharge)
 
@@ -369,7 +371,7 @@ log failures are just logged.
 
 ### `app/batch/populator.py` — Daily Batch Population
 
-This file orchestrates Phase 1. It is called once a day (at 07:00 by default) and
+This file orchestrates Phase 1. It is called every 1 hour and
 can also be triggered manually via the admin endpoint.
 
 **Step by step:**
@@ -396,7 +398,7 @@ This file makes the actual HTTP calls to Pyro. It handles:
 - Building the request payload
 - Encrypting the body
 - Making the HTTP POST
-- Decrypting the response
+- Parsing the response
 - Logging every call to `frc_txn_log`
 
 **`recharge()` function:** Called once per row in the processor. Before the POST, it
@@ -404,10 +406,10 @@ calls `token_manager.get_action_token()` which always refreshes the access token
 first and then generates a fresh action token. This means three API calls happen
 before every recharge: refresh_access_token → generate_action_token → recharge.
 
-**`_decrypt_response()` helper:** Both the recharge and status check responses are
-encrypted. This helper decrypts the response text and parses it as JSON. If
-decryption fails (e.g. Pyro sends a plain error for a gateway problem), it falls
-back to trying to parse as plain JSON. Either way, the caller gets a dict back.
+**`_parse_pyro_response()` helper:** Pyro responses are parsed as plain JSON first,
+which matches the current environment. Encrypted response parsing remains as a
+fallback for older or different Pyro deployments. Either way, the caller gets a
+dict back.
 
 **`_mask_body()` helper:** Before logging the request body to `frc_txn_log`, this
 replaces sensitive values (`mpin`, `password`) with `***`. The encrypted body is

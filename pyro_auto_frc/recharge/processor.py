@@ -24,16 +24,18 @@ from app.db.oracle import (
     BCD_STATUS_ID,
     BCD_STATUS_W,
     INVALID_DATA_CODES,
+    bcd_status_for_pyro_failure,
     update_bcd_status,
 )
-from app.db.postgres import (
+from pyro_auto_frc.app.db.postgres_old import (
     FLAG_FAILED,
     FLAG_RETRY,
+    PERMANENT_FAILURE_CODES,
     async_fetch_pending_rows,
     async_mark_as_failed,
     async_mark_as_pushed,
 )
-from app.pyro_client import PERMANENT_FAILURE_CODES, recharge
+from app.pyro_client import recharge
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -55,21 +57,25 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
         reqid         = row["reqid"]
         caf           = row["caf_serial_no"]
         gsmno         = row["gsmno"]
+        batch_date    = row["batch_date"]
         dealer_msisdn = row["vendormsisdn"] or row["ctopup_number"]
         amount        = int(row["frcamt"])
         mpin          = row["mpin"]       # already 3DES-encrypted in DB
         attempt       = int(row["retry_count"]) + 1
-        client_txn_id = row.get("client_txn_id") or str(reqid).zfill(5)[:15]
 
         logger.info("Processing reqid=%s gsmno=%s amount=%s attempt=%s",
                     reqid, gsmno, amount, attempt)
 
         response = await recharge(
+            reqid=reqid,
+            caf_serial_no=caf,
+            gsmno=gsmno,
+            batch_date=batch_date,
             dealer_msisdn=dealer_msisdn,
             dest_msisdn=gsmno,
             amount=amount,
-            client_txn_id=client_txn_id,
             mpin=mpin,
+            attempt_no=attempt,
         )
 
         status_code   = response.get("statusCode")
