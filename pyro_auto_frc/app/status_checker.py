@@ -1,16 +1,3 @@
-"""
-app/status_checker.py
----------------------
-Fallback for rows stuck in push_flag='P' with no callback.
-Runs every 5 minutes. Processes rows pushed 2-60 min ago.
-
-BCD writeback at each outcome:
-  2000 SUCCESS -> BCD: P (Processed)
-  902  FAILED  -> BCD: F (Failed)
-  901  NOT FOUND -> BCD stays W; retry next cycle (no BCD update)
-  other -> BCD: F
-"""
-
 import asyncio
 import json
 import logging
@@ -69,8 +56,9 @@ async def run_status_checks() -> dict:
         inner         = response.get("data", {})
 
         if status_code == 2000:
+            balance_before = inner.get("dealerBalanceBefore", 0.0)
             balance_after = inner.get("dealerBalanceAfter", 0.0)
-            await async_mark_as_success(reqid, response_text, balance_after, status_code)
+            await async_mark_as_success(reqid, response_text, balance_before, balance_after, status_code)
             await asyncio.to_thread(
                 update_bcd_status, caf, reqid, BCD_STATUS_P,
                 f"Recharge successful via status check. pyroTxnId={pyro_trans_id}"

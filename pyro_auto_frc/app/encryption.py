@@ -55,8 +55,7 @@ def decrypt(encrypted_text: str, secret_key: str) -> str:
     """
     Decrypts a 3DES-ECB Base64-encoded ciphertext back to plain text.
 
-    NOTE: Pyro API responses and callbacks are plain JSON — this is NOT
-    needed for normal operation. Provided for completeness only.
+    
     """
     key = _derive_key(secret_key)
     padded_b64 = encrypted_text + "=" * (-len(encrypted_text) % 4)

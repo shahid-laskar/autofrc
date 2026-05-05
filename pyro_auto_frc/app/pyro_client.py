@@ -1,14 +1,4 @@
 """
-app/pyro_client.py
-------------------
-HTTP client for all outbound Pyro API calls.
-
-Encryption summary (confirmed via Postman testing):
-  - REQUEST bodies  : encrypted (3DES-ECB, Base64 out)   ← encrypt() before POST
-  - RESPONSE bodies : plain JSON in current Pyro environment; encrypted fallback supported
-  - CALLBACK bodies : plain JSON posted by Pyro           ← no decryption needed
-
-This applies to:
   - POST /epin-vendor-api/recharge          (request encrypted, response parsed JSON-first)
   - POST /epin-vendor-api/transaction-status (request encrypted, response parsed JSON-first)
   - POST /auth-api/authentication            (request encrypted, response parsed JSON-first)

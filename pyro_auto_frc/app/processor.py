@@ -35,6 +35,7 @@ from app.db.postgres import (
 )
 from app.pyro_client import PERMANENT_FAILURE_CODES, recharge
 from app.config import settings
+from app.encryption import decrypt
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
         gsmno         = row["gsmno"]
         dealer_msisdn = row["vendormsisdn"] or row["ctopup_number"]
         amount        = int(row["frcamt"])
-        mpin          = row["mpin"]       # already 3DES-encrypted in DB
+        mpin          = decrypt(row["mpin"], settings.pyro_secret_key)  # already 3DES-encrypted in DB
         attempt       = int(row["retry_count"]) + 1
         client_txn_id = row.get("client_txn_id") or str(reqid).zfill(5)[:15]
 

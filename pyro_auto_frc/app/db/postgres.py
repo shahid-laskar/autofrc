@@ -384,9 +384,9 @@ async def async_mark_as_pushed(reqid, pyro_trans_id, response_text, msg2pyro, sc
     await asyncio.to_thread(mark_as_pushed, reqid, pyro_trans_id,
                             response_text, msg2pyro, sc)
 
-async def async_mark_as_success(reqid, response_text, balance_after, final_statuscode):
+async def async_mark_as_success(reqid, response_text, balance_before, balance_after, final_statuscode):
     await asyncio.to_thread(mark_as_success, reqid, response_text,
-                            balance_after, final_statuscode)
+                            balance_before, balance_after, final_statuscode)
 
 async def async_mark_as_failed(reqid, push_flag, remarks,
                                 response_text=None, final_statuscode=None):

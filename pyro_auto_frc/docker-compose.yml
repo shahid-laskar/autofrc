@@ -1,6 +1,5 @@
 services:
 
-  # ── FastAPI application ────────────────────────────────────────────────────
   frc-recharge:
     build:
       context: .
@@ -8,7 +7,6 @@ services:
     container_name: frc_recharge_service
     restart: unless-stopped
 
-    # All secrets come from .env — never hardcoded here
     env_file:
       - .env
 

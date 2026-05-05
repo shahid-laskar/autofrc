@@ -1,17 +1,3 @@
-"""
-app/auth/token_manager.py
--------------------------
-Singleton managing Pyro API tokens.
-
-Authentication:   POST /auth-api/authentication        (body encrypted, response plain JSON)
-Refresh:          GET  /auth-api/refresh-access-token  (no body, response plain JSON)
-Action token:     GET  /auth-api/generate-action-token (no body, response plain JSON)
-
-Token validity:
-  sessionToken  — 24 hours   — full re-auth on startup + daily cron
-  accessToken   — 15 minutes — always refreshed before action token generation
-  actionToken   — 1 min, single-use — generated per recharge call
-"""
 
 import base64
 import json

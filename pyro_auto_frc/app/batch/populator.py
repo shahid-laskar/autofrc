@@ -1,30 +1,3 @@
-"""
-app/batch/populator.py
-----------------------
-Daily batch job populating frc_pyro_request_data.
-
-Supports both EKYC (cos_bcd) and DKYC (cos_bcd_dkyc) subscribers.
-Both tables are queried in a single UNION ALL in fetch_cos_bcd_for_gsms().
-The returned rows are normalised to the same field names so this file
-handles them identically regardless of kyc_mode.
-
-Normalised fields from postgres.py (same keys for both EKYC and DKYC):
-  gsmnumber, caf_serial_no, de_csccode, circle_code,
-  live_photo_time    (customer_photo_time for DKYC — aliased in SQL)
-  frc_plan_name, frc_plan_code, frc_category_code, frcamt,
-  ctopup_number      (parent_ctopup_number for DKYC — aliased in SQL)
-  mpin_raw           (mpin for DKYC — aliased in SQL)
-  vendorid, vendormsisdn, kyc_mode
-
-kyc_mode is now sourced from Postgres (which table matched), NOT from
-Oracle BCD (where it is always NULL).
-
-Idempotency:
-  Primary  : Oracle BCD FRC_FLOW_STATUS='NP' filter — once set to 'RQ'
-             after insert, that BCD record never appears in Oracle fetch again.
-  Secondary: Postgres UNIQUE(batch_date, caf_serial_no) ON CONFLICT DO NOTHING.
-"""
-
 import logging
 from datetime import date
 from typing import List
@@ -42,10 +15,7 @@ def _encrypt_mpin(mpin: str) -> str:
 
 
 def run_batch_population() -> dict:
-    """
-    Main entry point. Called by scheduler daily and via admin trigger.
-    Returns summary dict with counts per outcome.
-    """
+   
     today = date.today().isoformat()
     logger.info("Batch population started for %s", today)
 

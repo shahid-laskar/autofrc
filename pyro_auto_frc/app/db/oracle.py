@@ -22,10 +22,9 @@ import logging
 from contextlib import contextmanager
 from typing import Generator, List, Optional
 
-try:
-    import oracledb as cx_Oracle
-except ImportError:  # pragma: no cover - fallback for older deployments
-    import cx_Oracle
+
+import oracledb as cx_Oracle
+
 
 from app.config import settings
 
