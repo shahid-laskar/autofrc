@@ -5,9 +5,9 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Request
 
-from app.db.oracle import BCD_STATUS_F, BCD_STATUS_P, update_bcd_status
+from app.db.oracle import BCD_STATUS_F, BCD_STATUS_P,BCD_STATUS_ID, update_bcd_status, bcd_status_for_pyro_failure
 from app.db.postgres import (
-    FLAG_FAILED, FLAG_SUCCESS,
+    FLAG_FAILED, FLAG_SUCCESS, INVALID_DATA_CODES,
     async_find_row_by_pyro_trans_id,
     async_insert_txn_log,
     async_mark_as_failed,
@@ -74,7 +74,7 @@ async def recharge_callback(request: Request):
         pyro_txn_id=int(pyro_txn_id),
         call_started_at=received_at, call_ended_at=received_at, duration_ms=0,
         is_success="Y" if status_code == 2000 else "N",
-        is_perm_failure="N",
+        is_perm_failure="Y" if status_code != 2000 else "N",
     )
 
     if status_code == 2000 and data.get("status") == "SUCCESS":
@@ -93,9 +93,9 @@ async def recharge_callback(request: Request):
     else:
         remarks = f"[{status_code}] {body.get('message', 'Callback failure')}"
         await async_mark_as_failed(reqid, FLAG_FAILED, remarks, body_text, status_code)
-        # BCD: F = Failed
+        bcd_status = bcd_status_for_pyro_failure(status_code)
         await asyncio.to_thread(
-            update_bcd_status, caf, reqid, BCD_STATUS_F, remarks
+            update_bcd_status, caf, reqid, bcd_status, remarks
         )
         logger.warning("Callback FAILURE: reqid=%s remarks=%s", reqid, remarks)
 

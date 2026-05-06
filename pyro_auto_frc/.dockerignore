@@ -10,13 +10,6 @@ build/
 .venv/
 venv/
 
-# Environment — NEVER bake secrets into the image
-.env
-
-# SSL certs — mounted at runtime, never in image
-nginx/ssl/*.crt
-nginx/ssl/*.key
-nginx/ssl/*.pem
 
 # Logs
 *.log
@@ -35,7 +28,16 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Docker artifacts
 Dockerfile
 docker-compose.yml
+
+
+.env
+.env.*
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
 .dockerignore
+*.md

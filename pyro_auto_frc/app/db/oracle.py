@@ -42,7 +42,7 @@ BCD_STATUS_ID = "ID"  # Invalid data permanent failure
 BCD_STATUS_F  = "F"   # General failure
 
 # Pyro codes -> ID (invalid data): wrong number, denom, MPIN, suspended account
-INVALID_DATA_CODES = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
+INVALID_DATA_CODES = {5006, 5011, 5012, 5030}
 
 
 def bcd_status_for_pyro_failure(pyro_status_code: int) -> str:
@@ -94,19 +94,20 @@ def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
       - FRC_REQID IS NULL                (secondary guard)
     """
     sql = """
-        SELECT
-            GSMNUMBER,
-            CAF_SERIAL_NO,
-            DE_CSCCODE,
-            CIRCLE_CODE,
-            HLR_FINAL_ACT_DATE
-        FROM CAF_ADMIN.BCD
-        WHERE ACTIVATION_STATUS  = 'C' 
-          AND HLR_FINAL_ACT_DATE IS NOT NULL
-          AND FRC_FLOW_STATUS    = :status_np
-          AND FRC_REQID          IS NULL
-          AND ROWNUM             <= :fetch_size
-        ORDER BY HLR_FINAL_ACT_DATE ASC
+        SELECT * FROM (
+            SELECT
+                GSMNUMBER,
+                CAF_SERIAL_NO,
+                DE_CSCCODE,
+                CIRCLE_CODE,
+                HLR_FINAL_ACT_DATE
+            FROM CAF_ADMIN.BCD_LASKAR
+            WHERE ACTIVATION_STATUS  = 'C' 
+            AND HLR_FINAL_ACT_DATE IS NOT NULL
+            AND FRC_FLOW_STATUS    = :status_np
+            AND FRC_REQID          IS NULL           
+            ORDER BY HLR_FINAL_ACT_DATE ASC
+        ) WHERE ROWNUM <= :fetch_size
     """
     with get_oracle_conn() as conn:
         cur = conn.cursor()
@@ -133,7 +134,7 @@ def batch_writeback_bcd_rq(caf_reqid_pairs: List[dict]) -> int:
         return 0
 
     sql = """
-        UPDATE CAF_ADMIN.BCD
+        UPDATE CAF_ADMIN.BCD_LASKAR
         SET
             FRC_FLOW_STATUS        = :status,
             FRC_REQID              = :reqid,
@@ -174,7 +175,7 @@ def update_bcd_status(
       General failure     -> F
     """
     sql = """
-        UPDATE CAF_ADMIN.BCD
+        UPDATE CAF_ADMIN.BCD_LASKAR
         SET
             FRC_FLOW_STATUS        = :status,
             FRC_FLOW_STATUS_UPD_AT = CURRENT_TIMESTAMP,

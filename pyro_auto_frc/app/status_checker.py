@@ -1,3 +1,16 @@
+"""
+app/status_checker.py
+---------------------
+Fallback for rows stuck in push_flag='P' with no callback.
+Runs every 5 minutes. Processes rows pushed 2-60 min ago.
+
+BCD writeback at each outcome:
+  2000 SUCCESS -> BCD: P (Processed)
+  902  FAILED  -> BCD: F (Failed)
+  901  NOT FOUND -> BCD stays W; retry next cycle (no BCD update)
+  other -> BCD: F
+"""
+
 import asyncio
 import json
 import logging
@@ -34,8 +47,9 @@ async def run_status_checks() -> dict:
     for row in rows:
         reqid         = row["reqid"]
         pyro_trans_id = row["pyro_trans_id"]
-        client_txn_id = row["client_txn_id"] or str(reqid).zfill(5)[:15]
         caf           = row["caf_serial_no"]
+        gsmno         = row["gsmno"]
+        batch_date    = row["batch_date"]
 
         await async_update_status_check_attempt(reqid)
 
@@ -47,8 +61,12 @@ async def run_status_checks() -> dict:
             )
 
         response = await check_transaction_status(
+            reqid=reqid,
+            caf_serial_no=caf,
+            gsmno=gsmno,
+            batch_date=batch_date,
             pyro_trans_id=str(pyro_trans_id),
-            client_txn_id=client_txn_id,
+            attempt_no=row["status_check_count"] + 1,
         )
 
         status_code   = response.get("statusCode")
@@ -58,7 +76,7 @@ async def run_status_checks() -> dict:
         if status_code == 2000:
             balance_before = inner.get("dealerBalanceBefore", 0.0)
             balance_after = inner.get("dealerBalanceAfter", 0.0)
-            await async_mark_as_success(reqid, response_text, balance_before, balance_after, status_code)
+            await async_mark_as_success(reqid, response_text,balance_before, balance_after, status_code)
             await asyncio.to_thread(
                 update_bcd_status, caf, reqid, BCD_STATUS_P,
                 f"Recharge successful via status check. pyroTxnId={pyro_trans_id}"
@@ -79,11 +97,12 @@ async def run_status_checks() -> dict:
 
         elif status_code == 901:
             # Not found yet -- keep waiting, BCD stays NR
-            await async_mark_as_failed(
-                reqid, FLAG_RETRY,
-                "[901] Not found on Pyro yet -- will retry",
-                response_text, status_code,
-            )
+            await async_update_status_check_attempt(reqid)
+            # await async_mark_as_failed(
+            #     reqid, FLAG_RETRY,
+            #     "[901] Not found on Pyro yet -- will retry",
+            #     response_text, status_code,
+            # )
             logger.warning("reqid=%s STATUS CHECK: not found (901) -- retry", reqid)
             retry += 1
 

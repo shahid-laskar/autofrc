@@ -13,6 +13,11 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
 
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
     networks:
       - frc_net
 
@@ -22,7 +27,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+     
+      start_period: 45s
 
     logging:
       driver: "json-file"

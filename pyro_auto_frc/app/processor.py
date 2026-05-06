@@ -18,22 +18,24 @@ BCD writeback at each state:
 import asyncio
 import json
 import logging
-
+from app.auth import token_manager
 from app.db.oracle import (
     BCD_STATUS_F,
     BCD_STATUS_ID,
     BCD_STATUS_W,
     INVALID_DATA_CODES,
     update_bcd_status,
+    bcd_status_for_pyro_failure,
 )
 from app.db.postgres import (
     FLAG_FAILED,
     FLAG_RETRY,
+    PERMANENT_FAILURE_CODES,
     async_fetch_pending_rows,
     async_mark_as_failed,
     async_mark_as_pushed,
 )
-from app.pyro_client import PERMANENT_FAILURE_CODES, recharge
+from app.pyro_client import recharge
 from app.config import settings
 from app.encryption import decrypt
 
@@ -51,7 +53,7 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
         return {"processed": 0, "registered": 0, "perm_failed": 0, "retryable": 0}
 
     registered = perm_failed = retryable = 0
-
+    exhausted_dealers = set()
     for row in rows:
         reqid         = row["reqid"]
         caf           = row["caf_serial_no"]
@@ -60,17 +62,26 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
         amount        = int(row["frcamt"])
         mpin          = decrypt(row["mpin"], settings.pyro_secret_key)  # already 3DES-encrypted in DB
         attempt       = int(row["retry_count"]) + 1
-        client_txn_id = row.get("client_txn_id") or str(reqid).zfill(5)[:15]
+        # client_txn_id = row.get("client_txn_id") or str(reqid).zfill(5)[:15]
 
         logger.info("Processing reqid=%s gsmno=%s amount=%s attempt=%s",
                     reqid, gsmno, amount, attempt)
-
+        if dealer_msisdn in exhausted_dealers:
+            remarks = f"[405] Skipped — dealer {dealer_msisdn} had insufficient balance earlier in this batch"
+            logger.error("SKIPPED: reqid=%s dealerMsisdn=%s — %s", reqid, dealer_msisdn, remarks)
+            retryable += 1
+            continue
+        
         response = await recharge(
+            reqid=reqid,
+            caf_serial_no=caf,
+            gsmno=gsmno,
+            batch_date=row["batch_date"],
             dealer_msisdn=dealer_msisdn,
             dest_msisdn=gsmno,
-            amount=amount,
-            client_txn_id=client_txn_id,
+            amount=amount,            
             mpin=mpin,
+            attempt_no=attempt,
         )
 
         status_code   = response.get("statusCode")
@@ -93,13 +104,33 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
             logger.info("reqid=%s registered -- pyroTxnId=%s", reqid, pyro_trans_id)
             registered += 1
 
+        elif status_code == 405:
+            exhausted_dealers.add(dealer_msisdn)
+            remarks = f"[405] Insufficient dealer balance — dealerMsisdn={dealer_msisdn}"
+            await async_mark_as_failed(reqid, FLAG_RETRY, remarks,
+                                       response_text, status_code)
+            logger.error(                         
+                "DEALER BALANCE EXHAUSTED: dealerMsisdn=%s reqid=%s — "
+                "remaining rows for this dealer will be skipped this batch run",
+                dealer_msisdn, reqid,
+            )
+            retryable += 1
+
+        elif status_code == 506:
+            logger.error("Invalid token (506) — triggering re-auth and aborting batch")
+            await token_manager.authenticate()
+            # Mark current row for retry, then break — tokens will be fresh next run
+            await async_mark_as_failed(reqid, FLAG_RETRY,
+                                    "[506] Invalid token — will retry after re-auth",
+                                    response_text, status_code)
+            retryable += 1
+            break   # abort the rest of the batch
         elif status_code in PERMANENT_FAILURE_CODES:
             remarks = f"[{status_code}] {response.get('message', 'Permanent failure')}"
             await async_mark_as_failed(reqid, FLAG_FAILED, remarks,
                                        response_text, status_code)
             # BCD: ID for data errors, F for others
-            bcd_status = (BCD_STATUS_ID if status_code in INVALID_DATA_CODES
-                          else BCD_STATUS_F)
+            bcd_status = bcd_status_for_pyro_failure(status_code)
             await asyncio.to_thread(
                 update_bcd_status, caf, reqid, bcd_status, remarks
             )
@@ -111,8 +142,8 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
             # BCD not updated yet; updated to F only after max retries exhausted
             remarks = f"[{status_code}] {response.get('message', 'Transient error')}"
             new_retry_count = attempt  # attempt = retry_count + 1 already
-            await async_mark_as_failed(reqid, FLAG_RETRY, remarks,
-                                       response_text, status_code)
+            flag = FLAG_FAILED if new_retry_count >= int(row["max_retries"]) else FLAG_RETRY
+            await async_mark_as_failed(reqid, flag, remarks, response_text, status_code)            
 
             # If this was the last retry, update BCD to F
             if new_retry_count >= int(row["max_retries"]):

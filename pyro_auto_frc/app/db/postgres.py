@@ -24,7 +24,7 @@ FLAG_RETRY   = "E"
 # Pyro codes -> permanent failure (no auto-retry)
 PERMANENT_FAILURE_CODES = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
 # Subset: invalid data errors -> BCD status 'ID'
-INVALID_DATA_CODES      = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
+INVALID_DATA_CODES = {5006, 5011, 5012, 5030}
 
 
 # ── Pool lifecycle ─────────────────────────────────────────────────────────────
@@ -169,7 +169,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             mpin, mpin_length,
             kyc_mode,
             in_status, pyro_status, push_flag,
-            batch_date, created_at
+            batch_date, created_at, inserted_at,
         ) VALUES (
             %(caf_serial_no)s, %(gsmno)s, %(csccode)s, %(circle_code)s,
             %(edate)s, %(reqdate)s,
@@ -178,7 +178,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             %(mpin)s, %(mpin_length)s,
             %(kyc_mode)s,
             'C', 'N', 'N',
-            CURRENT_DATE, CURRENT_TIMESTAMP
+            CURRENT_DATE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         )
         ON CONFLICT (batch_date, caf_serial_no) DO NOTHING
         RETURNING reqid, caf_serial_no
@@ -233,10 +233,12 @@ def mark_as_pushed(reqid: int, pyro_trans_id: int, response_text: str,
             pyro_trans_id           = %s,
             pyro_initial_statuscode = %s,
             submitted_at            = CURRENT_TIMESTAMP,
+            status_check_eligible_at   = CURRENT_TIMESTAMP + INTERVAL '45 seconds',
             msg2pyro                = %s,
             msg_afterreq            = %s,
             pyro_status             = 'REG',
-            client_txn_id           = %s
+            client_txn_id           = %s,
+            updated_ts              = CURRENT_TIMESTAMP
         WHERE reqid = %s
     """
     with get_pg_conn() as conn:
@@ -260,7 +262,8 @@ def mark_as_success(reqid: int, response_text: str,balance_before: float,
             dealer_bal_after        = %s,
             msg_aftertr             = %s,
             replyrecvd_date         = CURRENT_TIMESTAMP,
-            push_remarks            = 'Recharge successful'
+            push_remarks            = 'Recharge successful',
+            updated_ts              = CURRENT_TIMESTAMP
         WHERE reqid = %s
     """
     with get_pg_conn() as conn:
@@ -283,7 +286,8 @@ def mark_as_failed(reqid: int, push_flag: str, remarks: str,
             final_status            = CASE WHEN %s THEN 'FAILED' ELSE final_status END,
             pyro_final_statuscode   = COALESCE(%s, pyro_final_statuscode),
             completed_at            = CASE WHEN %s THEN CURRENT_TIMESTAMP ELSE completed_at END,
-            pyro_status             = CASE WHEN %s THEN 'FAL' ELSE pyro_status END
+            pyro_status             = CASE WHEN %s THEN 'FAL' ELSE pyro_status END,
+            updated_ts              = CURRENT_TIMESTAMP
         WHERE reqid = %s
     """
     with get_pg_conn() as conn:
@@ -318,7 +322,8 @@ def update_status_check_attempt(reqid: int) -> None:
     sql = """
         UPDATE public.frc_pyro_request_data
         SET status_check_count   = status_check_count + 1,
-            last_status_check_at = CURRENT_TIMESTAMP
+            last_status_check_at = CURRENT_TIMESTAMP,
+            updated_ts          = CURRENT_TIMESTAMP
         WHERE reqid = %s
     """
     with get_pg_conn() as conn:
