@@ -23,24 +23,25 @@ STATUS_REGISTERED = 2002
 def _parse_pyro_response(resp: httpx.Response, label: str) -> dict:
     """
     Parse a Pyro API response.
-    Tries plain JSON first; falls back to 3DES decrypt if that fails.
+    Decrypt first. fallback to plain JSON if decrypt fails (e.g. non-200 response with HTML body).
     """
     raw = resp.text.strip()
     logger.debug("%s raw response: %s", label, raw[:200])
 
     try:
-        return resp.json()
-    except Exception as json_err:
-        logger.debug("%s: plain JSON failed (%s) -- trying decrypt", label, json_err)
-
-    try:
         return json.loads(decrypt(raw, settings.pyro_secret_key))
     except Exception as dec_err:
+        logger.debug("%s: decrypt failed (%s) -- trying plain JSON", label, dec_err)
+
+    try:
+        return resp.json()
+    
+    except Exception as json_err:
         logger.error("%s: both plain JSON and decrypt failed. Raw: %s", label, raw[:300])
         return {
             "statusCode": -1,
             "status": "ERROR",
-            "message": f"Response parse failed: {dec_err}",
+            "message": f"Response parse failed: {json_err}",
         }
 
 

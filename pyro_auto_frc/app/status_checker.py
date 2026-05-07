@@ -59,14 +59,14 @@ async def run_status_checks() -> dict:
                 update_bcd_status, caf, reqid, BCD_STATUS_NR,
                 f"No callback received. Initiating status check. pyroTxnId={pyro_trans_id}"
             )
-
+        attempt_no = row.get("status_check_count", 0) + 1
         response = await check_transaction_status(
             reqid=reqid,
             caf_serial_no=caf,
             gsmno=gsmno,
             batch_date=batch_date,
             pyro_trans_id=str(pyro_trans_id),
-            attempt_no=row["status_check_count"] + 1,
+            attempt_no=attempt_no,
         )
 
         status_code   = response.get("statusCode")
