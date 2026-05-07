@@ -32,7 +32,14 @@ async def lifespan(app: FastAPI):
     logger.info("  Scheduler     : %s", "enabled" if settings.enable_scheduler else "disabled")
     init_pg_pool()
     init_oracle_pool()
-    await token_manager.authenticate()
+    try:
+        ok = await token_manager.authenticate()
+        if not ok:
+            logger.warning("Pyro auth failed on startup -- service will start anyway; "
+                           "scheduler daily-auth or manual /admin trigger will retry")
+    except Exception as exc:
+        logger.warning("Pyro auth exception on startup (%s: %s) -- service will start anyway",
+                       type(exc).__name__, exc)
     if settings.enable_scheduler:
         start_scheduler()
         scheduler_started = True

@@ -1255,3 +1255,93 @@ open https://mitra.bsnl.co.in/smpyro/docs
 | Encryption algorithm | `app/encryption.py` |
 | Callback handling | `app/callback.py` |
 | Nginx SSL config | `nginx/conf.d/frc.conf` |
+
+### Deployment
+
+On Windows dev PC:
+bash# Build for linux/amd64 (server architecture)
+docker buildx build --platform linux/amd64 -t frc_recharge_service:v1 .
+# use :latest/v2/etc
+
+# Save and compress
+docker save frc_recharge_service:v1 | gzip > frc_recharge.tar.gz
+
+# Copy to server (use your server's user and IP)
+scp frc_recharge.tar.gz m01400120u1@10.201.222.67:~
+scp frc_recharge.tar.gz m01400120u1@10.201.222.67:/home/m01400120u1/autofrc/
+inside server: nano docker-compose.yml
+services:
+
+  frc-recharge:
+    image: frc_recharge_service:latest
+    container_name: frc_recharge_service
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "8010:8000"
+
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+    networks:
+      - frc_net
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+
+networks:
+  frc_net:
+    driver: bridge
+scp .env m01400120u1@10.201.222.67:/home/m01400120u1/autofrc/
+If gzip is not available in your Windows terminal, use Git Bash or WSL. Alternatively save without compression:
+bashdocker save frc_recharge_service:latest -o frc_recharge.tar
+scp frc_recharge.tar user@10.x.x.x:/opt/frc/
+
+
+On the server:
+bashcd /opt/frc
+
+# Load the image
+docker load < frc_recharge.tar.gz
+
+# Make sure your .env and docker-compose.yml are here
+ls -la
+
+# Start the service
+docker compose up -d
+
+# Verify
+docker compose ps
+docker compose logs -f frc-recharge
+
+For subsequent deployments, same steps — rebuild on PC, scp, then on server:
+bashdocker compose down
+docker load < frc_recharge.tar.gz
+docker compose up -d
+
+One thing to update in docker-compose.yml on the server — since the image is pre-built and loaded, remove the build: block so compose doesn't try to build it:
+yamlservices:
+  frc-recharge:
+    image: frc_recharge_service:latest   # ← use loaded image directly
+    # build: block removed
+    ...
+
+    docker images | grep frc_recharge_service
+    docker rmi frc_recharge_service:v1
