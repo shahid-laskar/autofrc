@@ -8,4 +8,4 @@ nginx/ssl/*.key
 nginx/ssl/*.pem
 *.log
 .DS_Store
-.tar.*
+*.tar

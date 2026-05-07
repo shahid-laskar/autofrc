@@ -1260,11 +1260,11 @@ open https://mitra.bsnl.co.in/smpyro/docs
 
 On Windows dev PC:
 bash# Build for linux/amd64 (server architecture)
-docker buildx build --platform linux/amd64 -t frc_recharge_service:v1 .
+docker buildx build --platform linux/amd64 -t frc_recharge_service:v2 .
 # use :latest/v2/etc
 
 # Save and compress
-docker save frc_recharge_service:v1 | gzip > frc_recharge.tar.gz
+docker save frc_recharge_service:v2 | gzip > frc_recharge.tar.gz
 
 # Copy to server (use your server's user and IP)
 scp frc_recharge.tar.gz m01400120u1@10.201.222.67:~
