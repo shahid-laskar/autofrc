@@ -58,7 +58,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="FRC Pyro Recharge Service",
     version="1.0.0",
-    root_path="/smpyro",
+    root_path="/api",
     lifespan=lifespan,
 )
 

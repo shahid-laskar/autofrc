@@ -39,6 +39,10 @@ def init_pg_pool() -> None:
         database=settings.pg_database,
         user=settings.pg_user,
         password=settings.pg_password,
+        keepalives=1,
+        keepalives_idle=30,
+        keepalives_interval=10,
+        keepalives_count=5,
     )
     logger.info("Postgres pool initialised (min=%d max=%d)",
                 settings.pg_min_conn, settings.pg_max_conn)
@@ -55,11 +59,20 @@ def close_pg_pool() -> None:
 @contextmanager
 def get_pg_conn() -> Generator:
     conn = _pool.getconn()
+    # The pool has no built-in liveness check — swap out any connection the
+    # server dropped while it was idle (presents as conn.closed != 0).
+    if conn.closed:
+        logger.warning("Postgres: stale connection detected on checkout — replacing")
+        _pool.putconn(conn, close=True)
+        conn = _pool.getconn()
     try:
         yield conn
         conn.commit()
     except Exception:
-        conn.rollback()
+        try:
+            conn.rollback()
+        except Exception:
+            pass  # connection may have died mid-operation; ignore rollback error
         raise
     finally:
         _pool.putconn(conn)
@@ -78,7 +91,7 @@ def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
             cb.gsmnumber,
             cb.caf_serial_no,
             cb.de_csccode,
-            cb.circle_code,
+            cb.circle_code::TEXT AS circle_code,
             cb.live_photo_time                  AS live_photo_time,
             cb.frc_plan_name                    AS frc_plan_name,
             cb.frc_plan_code                    AS frc_plan_code,
@@ -88,7 +101,7 @@ def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
             cb.frc_ctopup_number_mpin           AS mpin_raw,
             cm.pos_unique_code                  AS vendorid,
             cm.ctopupno                         AS vendormsisdn,
-            'EKYC'                              AS kyc_mode
+            'EKYC'                              AS kyc_mode 
         FROM public.cos_bcd cb
         JOIN public.ctop_master cm
             ON cm.ctopupno = cb.frc_ctopup_number
@@ -117,8 +130,8 @@ def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
         SELECT
             cb.gsmnumber,
             cb.caf_serial_no,
-            cb.de_csccode,
-            cb.circle_code,
+            cb.de_csccode,            
+            cb.circle_code::TEXT AS circle_code,
             cb.customer_photo_time              AS live_photo_time,
             fp.plan_name                        AS frc_plan_name,
             fp.plan_code                        AS frc_plan_code,
@@ -169,7 +182,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             mpin, mpin_length,
             kyc_mode,
             in_status, pyro_status, push_flag,
-            batch_date, created_at, inserted_at,
+            batch_date, created_at
         ) VALUES (
             %(caf_serial_no)s, %(gsmno)s, %(csccode)s, %(circle_code)s,
             %(edate)s, %(reqdate)s,
@@ -178,13 +191,13 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             %(mpin)s, %(mpin_length)s,
             %(kyc_mode)s,
             'C', 'N', 'N',
-            CURRENT_DATE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            CURRENT_DATE, CURRENT_TIMESTAMP
         )
         ON CONFLICT (batch_date, caf_serial_no) DO NOTHING
         RETURNING reqid, caf_serial_no
     """
     inserted_pairs = []
-    with get_pg_conn() as conn:
+    with get_pg_conn() as conn: 
         with conn.cursor() as cur:
             for row in rows:
                 cur.execute(sql, row)

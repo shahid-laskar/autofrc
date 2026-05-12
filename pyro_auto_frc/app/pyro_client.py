@@ -129,8 +129,13 @@ async def recharge(
     started_at    = datetime.now(timezone.utc)
 
     # Generate fresh action token immediately before POST
-    action_token = await token_manager.get_action_token()
-    if not action_token:
+    try:
+        action_token = await token_manager.get_action_token()
+    except Exception as exc:
+        action_token = None
+        logger.error("Failed to generate action token: %s", exc)
+        
+    if not action_token:        
         ended_at = datetime.now(timezone.utc)
         duration = int((ended_at - started_at).total_seconds() * 1000)
         data = {"statusCode": -1, "status": "ERROR",

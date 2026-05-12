@@ -1262,57 +1262,24 @@ On Windows dev PC:
 bash# Build for linux/amd64 (server architecture)
 docker buildx build --platform linux/amd64 -t frc_recharge_service:v2 .
 # use :latest/v2/etc
+# Build manually with buildx
+docker buildx build --platform linux/amd64 -t frc-recharge:v2 .
+docker buildx build --platform linux/amd64 -t frc-nginx:v2 ./nginx
 
+# Save and transfer
+docker save frc-recharge:v2 frc-nginx:v2 -o frc_images_v2.tar
+scp frc_images_v2.tar user@10.201.222.67:~/frc/
 # Save and compress
 docker save frc_recharge_service:v2 | gzip > frc_recharge.tar.gz
 
 # Copy to server (use your server's user and IP)
 scp frc_recharge.tar.gz m01400120u1@10.201.222.67:~
 scp frc_recharge.tar.gz m01400120u1@10.201.222.67:/home/m01400120u1/autofrc/
-inside server: nano docker-compose.yml
-services:
+inside server: nano docker-compose.yml paste docker-compose-prod.yml
 
-  frc-recharge:
-    image: frc_recharge_service:latest
-    container_name: frc_recharge_service
-    restart: unless-stopped
-
-    env_file:
-      - .env
-
-    ports:
-      - "8010:8000"
-
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-
-    networks:
-      - frc_net
-
-    healthcheck:
-      test: ["CMD", "python", "-c",
-             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 45s
-
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-
-networks:
-  frc_net:
-    driver: bridge
 scp .env m01400120u1@10.201.222.67:/home/m01400120u1/autofrc/
-If gzip is not available in your Windows terminal, use Git Bash or WSL. Alternatively save without compression:
-bashdocker save frc_recharge_service:latest -o frc_recharge.tar
-scp frc_recharge.tar user@10.x.x.x:/opt/frc/
+
+scp frc_recharge.tar user@10.x.x.x:/opt/frc/ 
 
 
 On the server:

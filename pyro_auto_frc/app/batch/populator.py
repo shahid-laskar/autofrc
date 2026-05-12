@@ -61,7 +61,8 @@ def run_batch_population() -> dict:
 
     summary["ekyc_matched"] = sum(1 for r in pg_rows if r["kyc_mode"] == "EKYC")
     summary["dkyc_matched"] = sum(1 for r in pg_rows if r["kyc_mode"] == "DKYC")
-    summary["skipped_no_frc"] = len(gsm_list) - len(pg_rows)
+    matched_gsm_count = len({r["gsmnumber"] for r in pg_rows})
+    summary["skipped_no_frc"] = len(gsm_list) - matched_gsm_count
 
     if not pg_rows:
         logger.info("Batch: no GSMs with complete FRC data in Postgres")
@@ -109,7 +110,7 @@ def run_batch_population() -> dict:
             logger.error("Batch: MPIN encrypt failed CAF=%s -- %s", caf, exc)
             summary["skipped_mpin_err"] += 1
             continue
-
+        # logger.info("Batch: rows_to_insert=%d", len(rows_to_insert))
         rows_to_insert.append({
             "caf_serial_no":     caf,
             "gsmno":             gsm,

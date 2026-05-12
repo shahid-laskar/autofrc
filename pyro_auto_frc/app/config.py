@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     pyro_password: str
     # pyro_mpin: str
     pyro_secret_key: str
+    pyro_request_timeout_seconds: float = 30.0
 
     # Oracle DB (BCD table only)
     oracle_user: str

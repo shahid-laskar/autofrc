@@ -18,7 +18,7 @@ BCD writeback at each state:
 import asyncio
 import json
 import logging
-from app.auth import token_manager
+from app.auth.token_manager import token_manager
 from app.db.oracle import (
     BCD_STATUS_F,
     BCD_STATUS_ID,
@@ -51,6 +51,18 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
     if not rows:
         logger.info("Processor: no pending rows")
         return {"processed": 0, "registered": 0, "perm_failed": 0, "retryable": 0}
+
+    if not token_manager.session_token or not token_manager.access_token:
+        logger.warning("Processor: Pyro tokens missing before recharge batch; authenticating once")
+        if not await token_manager.authenticate():
+            logger.error("Processor: Pyro authentication unavailable; deferring recharge batch")
+            return {
+                "processed": 0,
+                "registered": 0,
+                "perm_failed": 0,
+                "retryable": 0,
+                "auth_failed": True,
+            }
 
     registered = perm_failed = retryable = 0
     exhausted_dealers = set()
@@ -103,6 +115,17 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
             )
             logger.info("reqid=%s registered -- pyroTxnId=%s", reqid, pyro_trans_id)
             registered += 1
+
+        elif status_code == -1 and response.get("message") == "Failed to generate action token":
+            remarks = "[-1] Failed to generate action token"
+            await async_mark_as_failed(reqid, FLAG_RETRY, remarks,
+                                       response_text, status_code)
+            retryable += 1
+            logger.warning(
+                "reqid=%s TRANSIENT: action token unavailable; aborting remainder of batch",
+                reqid,
+            )
+            break
 
         elif status_code == 405:
             exhausted_dealers.add(dealer_msisdn)

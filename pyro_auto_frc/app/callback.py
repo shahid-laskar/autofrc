@@ -22,7 +22,7 @@ router = APIRouter()
 async def recharge_callback(request: Request):
     """
     Callback URL for Pyro:
-        POST https://mitra.bsnl.co.in/smpyro/callback/recharge
+        POST https://smpyrogateway.bsnl.co.in/api/callback/recharge
     
     """
     try:

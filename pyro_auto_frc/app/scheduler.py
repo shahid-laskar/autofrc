@@ -41,7 +41,7 @@ async def _recharge_job():
         )
         logger.info("Scheduler: recharge done -- %s", summary)
     except Exception as exc:
-        logger.error("Scheduler: recharge exception: %s", exc)
+        logger.error("Scheduler: recharge exception: %s", exc, exc_info=True)
 
 
 async def _status_check_job():
