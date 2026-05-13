@@ -1,15 +1,3 @@
-"""
-app/status_checker.py
----------------------
-Fallback for rows stuck in push_flag='P' with no callback.
-Runs every 5 minutes. Processes rows pushed 2-60 min ago.
-
-BCD writeback at each outcome:
-  2000 SUCCESS -> BCD: P (Processed)
-  902  FAILED  -> BCD: F (Failed)
-  901  NOT FOUND -> BCD stays W; retry next cycle (no BCD update)
-  other -> BCD: F
-"""
 
 import asyncio
 import json

@@ -21,10 +21,7 @@ STATUS_REGISTERED = 2002
 
 
 def _parse_pyro_response(resp: httpx.Response, label: str) -> dict:
-    """
-    Parse a Pyro API response.
-    Decrypt first. fallback to plain JSON if decrypt fails (e.g. non-200 response with HTML body).
-    """
+    
     raw = resp.text.strip()
     logger.debug("%s raw response: %s", label, raw[:200])
 
@@ -117,13 +114,7 @@ async def recharge(
     mpin:          str,
     attempt_no:    int = 1,
 ) -> dict:
-    """
-    POST /epin-vendor-api/recharge
-
-    Generates fresh actionToken per call (single-use, 1-min expiry).
-    Encrypts entire JSON body. Parses response (plain JSON first, decrypt fallback).
-    Logs every call + outcome to frc_txn_log.
-    """
+    
     client_txn_id = str(reqid).zfill(5)[:15]
     url           = f"{settings.pyro_base_url}/epin-vendor-api/recharge"
     started_at    = datetime.now(timezone.utc)
@@ -134,7 +125,7 @@ async def recharge(
     except Exception as exc:
         action_token = None
         logger.error("Failed to generate action token: %s", exc)
-        
+
     if not action_token:        
         ended_at = datetime.now(timezone.utc)
         duration = int((ended_at - started_at).total_seconds() * 1000)
@@ -230,14 +221,7 @@ async def check_transaction_status(
     pyro_trans_id: str,
     attempt_no:    int = 1,
 ) -> dict:
-    """
-    POST /epin-vendor-api/transaction-status
 
-    Fallback for rows with no callback after 2+ minutes.
-    Per API spec: minimum 45 seconds after recharge before calling this.
-    Encrypts request body. Parses response (plain JSON first, decrypt fallback).
-    Logs every call + outcome to frc_txn_log.
-    """
     client_txn_id  = str(reqid).zfill(5)[:15]
     url            = f"{settings.pyro_base_url}/epin-vendor-api/transaction-status"
     started_at     = datetime.now(timezone.utc)

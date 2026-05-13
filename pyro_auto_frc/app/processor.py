@@ -1,20 +1,3 @@
-"""
-app/processor.py
-----------------
-Recharge dispatch loop.
-
-For each pending row (push_flag IN N/E):
-  1. Call Pyro /recharge (encrypted body, decrypted response)
-  2. statusCode 2002 -> push_flag='P', BCD -> 'W'
-  3. Permanent/data error -> push_flag='F', BCD -> 'ID' or 'F'
-  4. Transient error -> push_flag='E' (retry), BCD not updated yet
-
-BCD writeback at each state:
-  Submission OK   -> W   (waiting for callback)
-  Data failure    -> ID  (5006/5007/5011/5012/5030/406)
-  General failure -> F   (500/timeout/etc after retries exhausted)
-"""
-
 import asyncio
 import json
 import logging
@@ -43,10 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 async def process_pending_recharges(batch_size: int = 500) -> dict:
-    """
-    Main processing loop -- called by scheduler every 30 min
-    and by POST /admin/trigger-recharge.
-    """
+  
     rows = await async_fetch_pending_rows(batch_size)
     if not rows:
         logger.info("Processor: no pending rows")

@@ -1,8 +1,8 @@
 services:
 
   frc-recharge:
-    image: frc_recharge_service:v2
-    container_name: frc_recharge_service
+    image: frc_recharge:v2
+    container_name: frc_recharge
     restart: unless-stopped
 
     env_file:

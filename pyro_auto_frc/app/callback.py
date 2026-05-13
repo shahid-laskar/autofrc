@@ -56,13 +56,11 @@ async def recharge_callback(request: Request):
     current_flag = row["push_flag"]
     body_text    = json.dumps(body)
 
-    # Idempotency guard
     if current_flag in (FLAG_SUCCESS, FLAG_FAILED):
         logger.info("Callback: reqid=%s already terminal (%s) -- ignored",
                     reqid, current_flag)
         return {"received": True, "note": "already processed"}
 
-    # Log to frc_txn_log
     await async_insert_txn_log(
         frc_reqid=reqid, caf_serial_no=caf, gsmno=gsmno,
         batch_date=batch_date,
@@ -81,7 +79,7 @@ async def recharge_callback(request: Request):
         balance_before = data.get("dealerBalanceBefore", 0.0)
         balance_after = data.get("dealerBalanceAfter", 0.0)
         await async_mark_as_success(reqid, body_text, balance_before, balance_after, status_code)
-        # BCD: P = Processed/Success
+       
         await asyncio.to_thread(
             update_bcd_status, caf, reqid, BCD_STATUS_P,
             f"Recharge successful via callback. pyroTxnId={pyro_txn_id} "

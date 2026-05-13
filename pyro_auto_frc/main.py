@@ -1,12 +1,8 @@
-"""
-FRC Pyro Recharge Service
-Run: uvicorn main:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-ips '*'
-"""
 
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
 from app.auth.token_manager import token_manager
 from app.callback import router as callback_router
@@ -14,6 +10,7 @@ from app.config import settings
 from app.db.oracle import close_oracle_pool, init_oracle_pool
 from app.db.postgres import close_pg_pool, init_pg_pool
 from app.scheduler import start_scheduler, stop_scheduler
+from app.security import require_admin_api_key
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,8 +32,7 @@ async def lifespan(app: FastAPI):
     try:
         ok = await token_manager.authenticate()
         if not ok:
-            logger.warning("Pyro auth failed on startup -- service will start anyway; "
-                           "scheduler daily-auth or manual /admin trigger will retry")
+            logger.warning("Pyro auth failed on startup -- service will start anyway; ")
     except Exception as exc:
         logger.warning("Pyro auth exception on startup (%s: %s) -- service will start anyway",
                        type(exc).__name__, exc)
@@ -83,7 +79,10 @@ async def token_status():
     }
 
 
-@app.post("/admin/trigger-batch-population", tags=["Admin"])
+admin_dependencies = [Depends(require_admin_api_key)]
+
+
+@app.post("/admin/trigger-batch-population", tags=["Admin"], dependencies=admin_dependencies)
 async def trigger_batch_population():
     """Manually run Oracle BCD -> Postgres population."""
     import asyncio
@@ -92,7 +91,7 @@ async def trigger_batch_population():
     return {"triggered": True, "summary": summary}
 
 
-@app.post("/admin/trigger-recharge", tags=["Admin"])
+@app.post("/admin/trigger-recharge", tags=["Admin"], dependencies=admin_dependencies)
 async def trigger_recharge():
     """Manually trigger recharge dispatch."""
     from app.processor import process_pending_recharges
@@ -100,7 +99,7 @@ async def trigger_recharge():
     return {"triggered": True, "summary": summary}
 
 
-@app.post("/admin/trigger-status-check", tags=["Admin"])
+@app.post("/admin/trigger-status-check", tags=["Admin"], dependencies=admin_dependencies)
 async def trigger_status_check():
     """Manually trigger status check fallback."""
     from app.status_checker import run_status_checks

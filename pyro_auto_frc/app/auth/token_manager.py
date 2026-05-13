@@ -41,9 +41,7 @@ class PyroAuthService:
         return self._access_token_exp > datetime.now(timezone.utc).timestamp() + 60
 
     def _parse_pyro_response(self, resp: httpx.Response, label: str) -> dict:
-        """
-        Parse a Pyro response as plain JSON first, with encrypted fallback.
-        """
+        
         raw = resp.text.strip()
         try:
             return resp.json()

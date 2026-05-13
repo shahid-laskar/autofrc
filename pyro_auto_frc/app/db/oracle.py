@@ -1,22 +1,3 @@
-"""
-app/db/oracle.py
-----------------
-Oracle cx_Oracle pool — access to Oracle CAF_ADMIN.BCD table only.
-
-BCD eligibility filter (revised):
-  HLR_FINAL_ACT_DATE IS NOT NULL  -> proxy for "activated" (activation_status always NULL)
-  FRC_FLOW_STATUS = 'NP'          -> primary idempotency guard
-  FRC_REQID IS NULL               -> secondary guard
-  kyc_mode filter REMOVED         -> always NULL in BCD
-
-BCD frc_flow_status codes written by THIS service:
-  RQ  = Request Queued   -> batch populator inserted row into frc_pyro_request_data
-  W   = Waiting          -> recharge submitted to Pyro, awaiting callback
-  NR  = No Response      -> no callback; status check initiated
-  P   = Processed/Done   -> recharge confirmed successful (confirm code with team)
-  ID  = Invalid Data     -> permanent data failure (5006/5007/5011/5012/5030/406)
-  F   = Failed           -> general failure after exhausting retries
-"""
 
 import logging
 from contextlib import contextmanager
@@ -84,15 +65,7 @@ def get_oracle_conn() -> Generator[cx_Oracle.Connection, None, None]:
 # READ
 
 def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
-    """
-    Fetch BCD records eligible for FRC recharge.
-
-    Active filters:
-        - ACTIVATION_STATUS = 'C'           (activated)
-      - HLR_FINAL_ACT_DATE IS NOT NULL  (activation proxy)
-      - FRC_FLOW_STATUS = 'NP'           (primary idempotency guard)
-      - FRC_REQID IS NULL                (secondary guard)
-    """
+   
     sql = """
         SELECT * FROM (
             SELECT
@@ -122,14 +95,7 @@ def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
 # WRITE -- BCD status transitions
 
 def batch_writeback_bcd_rq(caf_reqid_pairs: List[dict]) -> int:
-    """
-    PRIMARY IDEMPOTENCY GUARD: After successful Postgres insert, update BCD to 'RQ'.
-    Once BCD.FRC_FLOW_STATUS = 'RQ', the Oracle fetch query will never return
-    this record again (filter requires FRC_FLOW_STATUS = 'NP').
-
-    caf_reqid_pairs: [{"caf_serial_no": str, "reqid": int}, ...]
-    Returns: count of rows updated.
-    """
+  
     if not caf_reqid_pairs:
         return 0
 
@@ -163,17 +129,7 @@ def update_bcd_status(
     frc_flow_status: str,
     remarks: str,
 ) -> None:
-    """
-    Update BCD frc_flow_status at each recharge state transition.
-    Failures here are logged but do NOT break the main flow.
 
-    Transitions:
-      After Pyro submit   -> W
-      Status check start  -> NR
-      Recharge success    -> P
-      Data failure        -> ID
-      General failure     -> F
-    """
     sql = """
         UPDATE CAF_ADMIN.BCD_LASKAR
         SET
