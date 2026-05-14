@@ -22,7 +22,7 @@ FLAG_FAILED  = "F"
 FLAG_RETRY   = "E"
 
 # Pyro codes -> permanent failure (no auto-retry)
-PERMANENT_FAILURE_CODES = {406, 5001, 5002, 5006, 5007, 5011, 5012, 5030}
+PERMANENT_FAILURE_CODES = {406, 505, 5006, 5007, 5011, 5012, 5030}
 # Subset: invalid data errors -> BCD status 'ID'
 INVALID_DATA_CODES = {5006, 5011, 5012, 5030}
 
@@ -179,7 +179,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             edate, reqdate,
             frc_plan_name, frc_plan_code, frc_category_code, frcamt,
             ctopup_number, vendormsisdn, vendorid,
-            mpin, mpin_length,
+            mpin, mpin_length,max_retries,
             kyc_mode,
             in_status, pyro_status, push_flag,
             batch_date, created_at
@@ -188,7 +188,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
             %(edate)s, %(reqdate)s,
             %(frc_plan_name)s, %(frc_plan_code)s, %(frc_category_code)s, %(frcamt)s,
             %(ctopup_number)s, %(vendormsisdn)s, %(vendorid)s,
-            %(mpin)s, %(mpin_length)s,
+            %(mpin)s, %(mpin_length)s, %(max_retries)s,
             %(kyc_mode)s,
             'C', 'N', 'N',
             CURRENT_DATE, CURRENT_TIMESTAMP
@@ -288,9 +288,11 @@ def mark_as_failed(reqid: int, push_flag: str, remarks: str,
                    response_text: Optional[str] = None,
                    final_statuscode: Optional[int] = None) -> None:
     is_permanent = (push_flag == FLAG_FAILED)
+    client_txn_id = str(reqid).zfill(5)[:15]
     sql = """
         UPDATE public.frc_pyro_request_data
         SET
+            client_txn_id           = COALESCE(client_txn_id, %s),
             push_flag               = %s,
             push_remarks            = %s,
             last_error_msg          = %s,
@@ -306,7 +308,7 @@ def mark_as_failed(reqid: int, push_flag: str, remarks: str,
     with get_pg_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(sql, (
-                push_flag, remarks[:200], remarks[:500], response_text,
+                client_txn_id, push_flag, remarks[:200], remarks[:500], response_text,
                 is_permanent, is_permanent, final_statuscode,
                 is_permanent, is_permanent, reqid,
             ))

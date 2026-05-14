@@ -24,6 +24,21 @@ from app.encryption import decrypt
 
 logger = logging.getLogger(__name__)
 
+async def _handle_transient(row, reqid, caf, remarks, response_text, status_code):
+    attempt = int(row["retry_count"]) + 1
+    flag = FLAG_FAILED if attempt >= int(row["max_retries"]) else FLAG_RETRY
+    await async_mark_as_failed(reqid, flag, remarks, response_text, status_code)
+
+    if attempt >= int(row["max_retries"]):
+        await asyncio.to_thread(
+            update_bcd_status, caf, reqid, BCD_STATUS_F,
+            f"Max retries exhausted. Last error: {remarks}"
+        )
+        logger.warning("reqid=%s max retries exhausted -> BCD=F: %s", reqid, remarks)
+    else:
+        logger.warning("reqid=%s TRANSIENT (retry %d/%d): %s",
+                       reqid, attempt, row["max_retries"], remarks)
+    return flag
 
 async def process_pending_recharges(batch_size: int = 500) -> dict:
   
@@ -127,7 +142,8 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
                                     "[506] Invalid token — will retry after re-auth",
                                     response_text, status_code)
             retryable += 1
-            break   # abort the rest of the batch
+            break 
+          # abort the rest of the batch
         elif status_code in PERMANENT_FAILURE_CODES:
             remarks = f"[{status_code}] {response.get('message', 'Permanent failure')}"
             await async_mark_as_failed(reqid, FLAG_FAILED, remarks,
@@ -140,26 +156,31 @@ async def process_pending_recharges(batch_size: int = 500) -> dict:
             logger.warning("reqid=%s PERMANENT [%s]: %s", reqid, bcd_status, remarks)
             perm_failed += 1
 
-        else:
-            # Transient -- retry on next scheduler run
-            # BCD not updated yet; updated to F only after max retries exhausted
-            remarks = f"[{status_code}] {response.get('message', 'Transient error')}"
-            new_retry_count = attempt  # attempt = retry_count + 1 already
-            flag = FLAG_FAILED if new_retry_count >= int(row["max_retries"]) else FLAG_RETRY
-            await async_mark_as_failed(reqid, flag, remarks, response_text, status_code)            
-
-            # If this was the last retry, update BCD to F
-            if new_retry_count >= int(row["max_retries"]):
-                await asyncio.to_thread(
-                    update_bcd_status, caf, reqid, BCD_STATUS_F,
-                    f"Max retries exhausted. Last error: {remarks}"
-                )
-                logger.warning("reqid=%s max retries exhausted -> BCD=F: %s",
-                               reqid, remarks)
-            else:
-                logger.warning("reqid=%s TRANSIENT (retry %d/%d): %s",
-                               reqid, new_retry_count, row["max_retries"], remarks)
+        elif status_code in (5001, 5002):
+            logger.error("Auth credential error (%s) — triggering re-auth and aborting batch", status_code)
+            await token_manager.authenticate()
+            await async_mark_as_failed(reqid, FLAG_RETRY,
+                                    f"[{status_code}] Auth error — will retry after credential fix",
+                                    response_text, status_code)
             retryable += 1
+            break
+        
+        elif status_code in (415, 5016):
+            remarks = f"[{status_code}] Duplicate subscriber window — retry after 15 min"
+            await _handle_transient(row, reqid, caf, remarks, response_text, status_code)
+            retryable += 1
+
+        elif status_code in (500, 5000):
+            remarks = f"[{status_code}] Pyro/IN transient error — will retry"
+            await _handle_transient(row, reqid, caf, remarks, response_text, status_code)
+            retryable += 1
+
+        else:
+            remarks = f"[{status_code}] {response.get('message', 'Transient error')}"
+            await _handle_transient(row, reqid, caf, remarks, response_text, status_code)
+            retryable += 1
+
+        
 
     summary = {
         "processed":   len(rows),

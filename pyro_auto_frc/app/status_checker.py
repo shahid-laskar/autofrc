@@ -18,7 +18,7 @@ from app.db.postgres import (
     async_update_status_check_attempt,
 )
 from app.pyro_client import check_transaction_status
-
+from app.config import settings
 logger = logging.getLogger(__name__)
 
 
@@ -84,25 +84,46 @@ async def run_status_checks() -> dict:
             failed += 1
 
         elif status_code == 901:
-            # Not found yet -- keep waiting, BCD stays NR
-            await async_update_status_check_attempt(reqid)
-            # await async_mark_as_failed(
-            #     reqid, FLAG_RETRY,
-            #     "[901] Not found on Pyro yet -- will retry",
-            #     response_text, status_code,
-            # )
-            logger.warning("reqid=%s STATUS CHECK: not found (901) -- retry", reqid)
-            retry += 1
+            if attempt_no >= settings.status_check_max_attempts:
+                remarks = (
+                    f"[901] Transaction not found after {attempt_no} "
+                    "status-check attempts"
+                )
+                await async_mark_as_failed(reqid, FLAG_FAILED, remarks,
+                                           response_text, status_code)
+                await asyncio.to_thread(
+                    update_bcd_status, caf, reqid, BCD_STATUS_F, remarks
+                )
+                logger.warning("reqid=%s STATUS CHECK: final failed after 901", reqid)
+                failed += 1
+            else:
+                logger.warning(
+                    "reqid=%s STATUS CHECK: not found (901) -- retry %d/%d",
+                    reqid, attempt_no, settings.status_check_max_attempts,
+                )
+                retry += 1
 
         else:
             remarks = f"[{status_code}] {response.get('message', 'Unknown')}"
-            await async_mark_as_failed(reqid, FLAG_RETRY, remarks,
-                                       response_text, status_code)
-            await asyncio.to_thread(
-                update_bcd_status, caf, reqid, BCD_STATUS_F, remarks
-            )
-            logger.warning("reqid=%s STATUS CHECK unknown: %s", reqid, remarks)
-            retry += 1
+            if attempt_no >= settings.status_check_max_attempts:
+                final_remarks = (
+                    f"{remarks}; max status-check attempts reached "
+                    f"({attempt_no}/{settings.status_check_max_attempts})"
+                )
+                await async_mark_as_failed(reqid, FLAG_FAILED, final_remarks,
+                                           response_text, status_code)
+                await asyncio.to_thread(
+                    update_bcd_status, caf, reqid, BCD_STATUS_F, final_remarks
+                )
+                logger.warning("reqid=%s STATUS CHECK final failure: %s",
+                               reqid, final_remarks)
+                failed += 1
+            else:
+                logger.warning(
+                    "reqid=%s STATUS CHECK unknown retry %d/%d: %s",
+                    reqid, attempt_no, settings.status_check_max_attempts, remarks,
+                )
+                retry += 1
 
     summary = {"checked": len(rows), "success": success,
                "failed": failed, "retry": retry}

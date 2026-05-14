@@ -30,18 +30,33 @@ class Settings(BaseSettings):
     pg_password: str
     pg_min_conn: int = 2
     pg_max_conn: int = 10
-
+    recharge_max_retries: int = 3
     # Deployment
     callback_base_url: str
 
     # Scheduler
-    enable_scheduler: bool = True
-    batch_population_hour: int = 7
-    batch_population_minute: int = 0
+    enable_scheduler: bool = True    
     oracle_batch_fetch_size: int = 500
-
+    status_check_max_attempts: int = 5
     # Recharge processing
     recharge_batch_size: int = 500
+    # Scheduler — auth
+    scheduler_auth_hour: int = 0
+    scheduler_auth_minute: int = 5
 
+    # Scheduler — intervals (in their natural units)
+    scheduler_batch_population_interval_minutes: int = 30
+    scheduler_recharge_interval_minutes: int = 15
+    scheduler_status_check_interval_minutes: int = 5
+
+    # Scheduler — misfire grace times (seconds)
+    scheduler_batch_population_grace_seconds: int = 120
+    scheduler_recharge_grace_seconds: int = 60
+    scheduler_status_check_grace_seconds: int = 30
+
+    run_batch_on_startup: bool = False
+    run_recharge_on_startup: bool = False
+    run_debit_on_startup: bool = False
+    run_cleanup_on_startup: bool = True
 
 settings = Settings()

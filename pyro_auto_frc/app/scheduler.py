@@ -54,12 +54,12 @@ async def _status_check_job():
 
 
 def start_scheduler():
-    now = datetime.now(timezone.utc)   
+    now = datetime.now(timezone.utc)
 
-    # ── Daily re-auth (CronTrigger — must fire at specific wall-clock time) ────
     scheduler.add_job(
         _daily_auth_job,
-        CronTrigger(hour=0, minute=5),
+        CronTrigger(hour=settings.scheduler_auth_hour,
+                    minute=settings.scheduler_auth_minute),
         id="daily_auth",
         replace_existing=True,
         max_instances=1,
@@ -68,47 +68,47 @@ def start_scheduler():
 
     scheduler.add_job(
         _batch_population_job,
-        IntervalTrigger(hours=1),
+        IntervalTrigger(minutes=settings.scheduler_batch_population_interval_minutes),
         id="batch_population",
         replace_existing=True,
         max_instances=1,
         coalesce=True,
-        misfire_grace_time=120,
-        next_run_time=now,      
+        misfire_grace_time=settings.scheduler_batch_population_grace_seconds,
+        next_run_time=now if settings.run_batch_on_startup else None,
     )
 
-   
     scheduler.add_job(
         _recharge_job,
-        IntervalTrigger(minutes=30),
+        IntervalTrigger(minutes=settings.scheduler_recharge_interval_minutes),
         id="recharge_batch",
         replace_existing=True,
         max_instances=1,
         coalesce=True,
-        misfire_grace_time=60,
-        next_run_time=now,      # pick up any rows left over from before restart
+        misfire_grace_time=settings.scheduler_recharge_grace_seconds,
+        next_run_time=now if settings.run_recharge_on_startup else None,
     )
 
-    # ── Status check (every 5 min) ─────────────────────────────────────────────
     scheduler.add_job(
         _status_check_job,
-        IntervalTrigger(minutes=5),
+        IntervalTrigger(minutes=settings.scheduler_status_check_interval_minutes),
         id="status_check",
         replace_existing=True,
         max_instances=1,
         coalesce=True,
-        misfire_grace_time=30,
+        misfire_grace_time=settings.scheduler_status_check_grace_seconds,       
     )
 
     scheduler.start()
     logger.info(
         "Scheduler started -- "
-        "batch_pop: every 1hr (immediate on startup) | "
-        "recharge: every 30min (immediate on startup) | "
-        "status_check: every 5min | "
-        "daily_auth: 00:05"
+        "batch_pop: every %dmin | recharge: every %dmin | "
+        "status_check: every %dmin | daily_auth: %02d:%02d",
+        settings.scheduler_batch_population_interval_minutes,
+        settings.scheduler_recharge_interval_minutes,
+        settings.scheduler_status_check_interval_minutes,
+        settings.scheduler_auth_hour,
+        settings.scheduler_auth_minute,
     )
-
 
 def stop_scheduler():
     scheduler.shutdown()

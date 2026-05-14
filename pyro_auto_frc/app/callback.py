@@ -18,6 +18,19 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _values_match(expected, actual) -> bool:
+    if expected is None or actual is None:
+        return True
+    return str(expected).strip() == str(actual).strip()
+
+def _amount_matches(expected, actual) -> bool:
+    if expected is None or actual is None:
+        return True
+    try:
+        return float(expected) == float(actual)
+    except (TypeError, ValueError):
+        return False
+    
 @router.post("/callback/recharge")
 async def recharge_callback(request: Request):
     """
@@ -43,8 +56,13 @@ async def recharge_callback(request: Request):
     if not pyro_txn_id:
         logger.error("Callback: missing transactionId: %s", body)
         return {"received": True, "note": "missing transactionId"}
-
-    row = await async_find_row_by_pyro_trans_id(int(pyro_txn_id))
+    try:
+        pyro_txn_id_int = int(pyro_txn_id)
+    except (TypeError, ValueError):
+        logger.error("Callback: invalid transactionId: %s", pyro_txn_id)
+        return {"received": True, "note": "invalid transactionId"}
+    
+    row = await async_find_row_by_pyro_trans_id(pyro_txn_id_int)
     if not row:
         logger.warning("Callback: no row for pyroTxnId=%s", pyro_txn_id)
         return {"received": True, "note": "transaction not found"}
@@ -55,6 +73,41 @@ async def recharge_callback(request: Request):
     batch_date   = row.get("batch_date")
     current_flag = row["push_flag"]
     body_text    = json.dumps(body)
+
+    validation_errors = []
+    if not _values_match(row.get("client_txn_id"), client_txn_id):
+        validation_errors.append(
+            f"clientTxnId mismatch expected={row.get('client_txn_id')} got={client_txn_id}"
+        )
+    if not _values_match(row.get("gsmno"), data.get("destMsisdn")):
+        validation_errors.append(
+            f"destMsisdn mismatch expected={row.get('gsmno')} got={data.get('destMsisdn')}"
+        )
+    if not _amount_matches(row.get("frcamt"), data.get("amount")):
+        validation_errors.append(
+            f"amount mismatch expected={row.get('frcamt')} got={data.get('amount')}"
+        )
+
+    if validation_errors:
+        logger.warning(
+            "Callback validation failed: reqid=%s pyroTxnId=%s errors=%s",
+            reqid, pyro_txn_id, validation_errors,
+        )
+        await async_insert_txn_log(
+            frc_reqid=reqid, caf_serial_no=caf, gsmno=gsmno,
+            batch_date=batch_date,
+            client_txn_id=str(client_txn_id) if client_txn_id else None,
+            api_stage="CALLBACK_RECV", api_endpoint=None, http_method=None,
+            attempt_no=1, request_headers=None, request_body=None,
+            response_http_code=422, response_body=body_text,
+            pyro_status_code=status_code, pyro_status_text=data.get("status"),
+            pyro_txn_id=pyro_txn_id_int,
+            call_started_at=received_at, call_ended_at=received_at, duration_ms=0,
+            is_success="N", is_perm_failure="N",
+            error_class="CallbackValidationError",
+            error_detail="; ".join(validation_errors),
+        )
+        return {"received": True, "note": "callback validation failed"}
 
     if current_flag in (FLAG_SUCCESS, FLAG_FAILED):
         logger.info("Callback: reqid=%s already terminal (%s) -- ignored",
@@ -69,7 +122,7 @@ async def recharge_callback(request: Request):
         attempt_no=1, request_headers=None, request_body=None,
         response_http_code=200, response_body=body_text,
         pyro_status_code=status_code, pyro_status_text=data.get("status"),
-        pyro_txn_id=int(pyro_txn_id),
+        pyro_txn_id=pyro_txn_id_int,
         call_started_at=received_at, call_ended_at=received_at, duration_ms=0,
         is_success="Y" if status_code == 2000 else "N",
         is_perm_failure="Y" if status_code != 2000 else "N",

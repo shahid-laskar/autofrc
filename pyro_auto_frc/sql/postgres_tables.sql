@@ -106,26 +106,7 @@ CREATE INDEX idx_frc_pyro_final
     ON public.frc_pyro_request_data (final_status, completed_at)
     WHERE final_status IS NOT NULL;
 
-CREATE OR REPLACE FUNCTION public.trg_frc_pyro_auto_fn()
-RETURNS TRIGGER LANGUAGE plpgsql AS $$
-BEGIN
-    NEW.updated_ts := CURRENT_TIMESTAMP;
 
-    IF TG_OP = 'UPDATE'
-       AND OLD.submitted_at IS NULL
-       AND NEW.submitted_at IS NOT NULL
-    THEN
-        NEW.status_check_eligible_at :=
-            NEW.submitted_at + INTERVAL '45 seconds';
-    END IF;
-
-    RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER trg_frc_pyro_auto
-BEFORE INSERT OR UPDATE ON public.frc_pyro_request_data
-FOR EACH ROW EXECUTE FUNCTION public.trg_frc_pyro_auto_fn();
 
 CREATE TABLE IF NOT EXISTS public.frc_txn_log (
 

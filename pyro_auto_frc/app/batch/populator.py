@@ -127,6 +127,7 @@ def run_batch_population() -> dict:
             "vendorid":          pg.get("vendorid"),
             "mpin":              encrypted_mpin,
             "mpin_length":       mpin_length,
+            "max_retries": settings.recharge_max_retries,
             # kyc_mode from Postgres (EKYC or DKYC) — Oracle always NULL
             "kyc_mode":          pg.get("kyc_mode", "EKYC"),
         })
