@@ -9,3 +9,4 @@ nginx/ssl/*.pem
 *.log
 .DS_Store
 *.tar
+*.tar.gz
