@@ -17,7 +17,7 @@ services:
         hard: 65536
 
     networks:
-      - frc_net
+      - pyro_shared_net
 
     healthcheck:
       test: ["CMD", "python", "-c",
@@ -46,7 +46,7 @@ services:
       frc-recharge:
         condition: service_healthy
     networks:
-      - frc_net
+      - pyro_shared_net
     logging:
       driver: "json-file"
       options:
@@ -54,5 +54,5 @@ services:
         max-file: "5"
 
 networks:
-  frc_net:
-    driver: bridge
+  pyro_shared_net:
+    external: true

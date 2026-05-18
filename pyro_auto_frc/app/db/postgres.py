@@ -1,4 +1,5 @@
 import asyncio
+import functools
 import logging
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -11,6 +12,25 @@ import psycopg2.extras
 from app.config import settings
 
 logger = logging.getLogger(__name__)
+
+def _pg_retry(fn):
+    """Retry a synchronous DB function once on OperationalError.
+
+    When a pooled connection goes stale, get_pg_conn discards it and raises
+    OperationalError. A single retry is enough — the pool always creates a
+    fresh connection for the second attempt.
+    """
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except psycopg2.OperationalError as exc:
+            logger.warning(
+                "Postgres: %s failed with OperationalError (%s) — retrying once",
+                fn.__name__, exc,
+            )
+            return fn(*args, **kwargs)
+    return wrapper
 
 _pool: Optional[psycopg2.pool.ThreadedConnectionPool] = None
 
@@ -65,21 +85,27 @@ def get_pg_conn() -> Generator:
         logger.warning("Postgres: stale connection detected on checkout — replacing")
         _pool.putconn(conn, close=True)
         conn = _pool.getconn()
+    discard = False
     try:
         yield conn
         conn.commit()
-    except Exception:
+    except Exception as exc:        
+        discard = isinstance(exc, psycopg2.OperationalError) or bool(conn.closed)
         try:
             conn.rollback()
         except Exception:
-            pass  # connection may have died mid-operation; ignore rollback error
+            discard = True  # rollback itself failed — connection is unusable
+            logger.warning("Postgres: rollback failed — discarding connection")
         raise
     finally:
-        _pool.putconn(conn)
+        _pool.putconn(conn, close=discard)
+        if discard:
+            logger.warning("Postgres: broken connection discarded from pool")
+    
 
 
 # ── Source data queries (batch population) ────────────────────────────────────
-
+@_pg_retry
 def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
    
     if not gsm_numbers:
@@ -167,7 +193,7 @@ def fetch_cos_bcd_for_gsms(gsm_numbers: List[str]) -> List[dict]:
     )
     return rows
 
-
+@_pg_retry
 def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
     
     if not rows:
@@ -214,7 +240,7 @@ def bulk_insert_frc_requests(rows: List[dict]) -> List[dict]:
 
 
 # ── Recharge state machine ─────────────────────────────────────────────────────
-
+@_pg_retry
 def fetch_pending_rows(batch_size: int = 500) -> List[dict]:
     sql = """
         SELECT
@@ -233,7 +259,7 @@ def fetch_pending_rows(batch_size: int = 500) -> List[dict]:
             cur.execute(sql, (batch_size,))
             return [dict(r) for r in cur.fetchall()]
 
-
+@_pg_retry
 def mark_as_pushed(reqid: int, pyro_trans_id: int, response_text: str,
                    msg2pyro: str, initial_statuscode: int) -> None:
     client_txn_id = str(reqid).zfill(5)[:15]
@@ -259,7 +285,7 @@ def mark_as_pushed(reqid: int, pyro_trans_id: int, response_text: str,
             cur.execute(sql, (pyro_trans_id, initial_statuscode,
                               msg2pyro, response_text, client_txn_id, reqid))
 
-
+@_pg_retry
 def mark_as_success(reqid: int, response_text: str,balance_before: float,
                     balance_after: float, final_statuscode: int) -> None:
     sql = """
@@ -283,7 +309,7 @@ def mark_as_success(reqid: int, response_text: str,balance_before: float,
         with conn.cursor() as cur:
             cur.execute(sql, (final_statuscode, balance_before,balance_after, response_text, reqid))
 
-
+@_pg_retry
 def mark_as_failed(reqid: int, push_flag: str, remarks: str,
                    response_text: Optional[str] = None,
                    final_statuscode: Optional[int] = None) -> None:
@@ -313,7 +339,7 @@ def mark_as_failed(reqid: int, push_flag: str, remarks: str,
                 is_permanent, is_permanent, reqid,
             ))
 
-
+@_pg_retry
 def fetch_pushed_rows_for_status_check() -> List[dict]:
     sql = """
         SELECT
@@ -332,7 +358,7 @@ def fetch_pushed_rows_for_status_check() -> List[dict]:
             cur.execute(sql)
             return [dict(r) for r in cur.fetchall()]
 
-
+@_pg_retry
 def update_status_check_attempt(reqid: int) -> None:
     sql = """
         UPDATE public.frc_pyro_request_data
@@ -345,7 +371,7 @@ def update_status_check_attempt(reqid: int) -> None:
         with conn.cursor() as cur:
             cur.execute(sql, (reqid,))
 
-
+@_pg_retry
 def find_row_by_pyro_trans_id(pyro_trans_id: int) -> Optional[dict]:
     sql = """
         SELECT reqid, caf_serial_no, gsmno, batch_date, push_flag
