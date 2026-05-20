@@ -34,17 +34,15 @@ services:
         max-file: "5"
 
   nginx:
-    image: frc_nginx:v2
+    image: nginx:1.27-alpine        
     container_name: frc_nginx
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      frc-recharge:
-        condition: service_healthy
+      - /etc/smpyro/nginx/conf.d:/etc/nginx/conf.d:ro   
+      - /etc/smpyro/nginx/ssl:/etc/nginx/ssl:ro
     networks:
       - pyro_shared_net
     logging:

@@ -36,22 +36,17 @@ services:
         max-size: "10m"
         max-file: "5"
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile    
+    image: nginx:1.27-alpine        
     container_name: frc_nginx
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/ssl:/etc/nginx/ssl:ro      
-    depends_on:
-      frc-recharge:
-        condition: service_healthy
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro   
+      - ./nginx/ssl:/etc/nginx/ssl:ro
     networks:
       - pyro_shared_net
-
     logging:
       driver: "json-file"
       options:
