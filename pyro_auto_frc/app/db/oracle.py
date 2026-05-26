@@ -74,7 +74,7 @@ def fetch_eligible_bcd_records(fetch_size: int = 500) -> List[dict]:
                 DE_CSCCODE,
                 CIRCLE_CODE,
                 HLR_FINAL_ACT_DATE
-            FROM CAF_ADMIN.BCD_LASKAR
+            FROM CAF_ADMIN.BCD
             WHERE ACTIVATION_STATUS  = 'C' 
             AND HLR_FINAL_ACT_DATE IS NOT NULL
             AND FRC_FLOW_STATUS    = :status_np
@@ -100,7 +100,7 @@ def batch_writeback_bcd_rq(caf_reqid_pairs: List[dict]) -> int:
         return 0
 
     sql = """
-        UPDATE CAF_ADMIN.BCD_LASKAR
+        UPDATE CAF_ADMIN.BCD
         SET
             FRC_FLOW_STATUS        = :status,
             FRC_REQID              = :reqid,
@@ -131,7 +131,7 @@ def update_bcd_status(
 ) -> None:
 
     sql = """
-        UPDATE CAF_ADMIN.BCD_LASKAR
+        UPDATE CAF_ADMIN.BCD
         SET
             FRC_FLOW_STATUS        = :status,
             FRC_FLOW_STATUS_UPD_AT = CURRENT_TIMESTAMP,
