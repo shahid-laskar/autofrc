@@ -125,7 +125,7 @@ async def recharge_callback(request: Request):
         pyro_txn_id=pyro_txn_id_int,
         call_started_at=received_at, call_ended_at=received_at, duration_ms=0,
         is_success="Y" if status_code == 2000 else "N",
-        is_perm_failure="Y" if status_code != 2000 else "N",
+        is_perm_failure="Y" if status_code not in (2000, 2002) else "N",
     )
 
     if status_code == 2000 and data.get("status") == "SUCCESS":
@@ -141,6 +141,8 @@ async def recharge_callback(request: Request):
         logger.info("Callback SUCCESS: reqid=%s pyroTxnId=%s gsmno=%s amount=%s bal_after=%s",
                     reqid, pyro_txn_id, data.get("destMsisdn"),
                     data.get("amount"), balance_after)
+    elif status_code == 2002:
+        logger.info("Callback: reqid=%s still IN_PROCESS (2002) -- awaiting final callback", reqid)
     else:
         remarks = f"[{status_code}] {body.get('message', 'Callback failure')}"
         await async_mark_as_failed(reqid, FLAG_FAILED, remarks, body_text, status_code)

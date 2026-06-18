@@ -1,0 +1,2381 @@
+POST https://bsnlapigateway.pyrogroup.com/auth-api/authentication: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 49990
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f73be10f-be23-4ef8-bda6-214d969a0f27",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "64",
+    ":path": "/auth-api/authentication",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "dEFoSKVc0YIoUsVSmt6WYu0stGW/kj/2bhnlithOA4gblDWhjopiQz4uCHfY/98V",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:13:30 GMT",
+    "x-envoy-upstream-service-time": "13",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"authentication\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MjoxNzc5ODc0MTEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDExMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQxMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.smPJ_ZzEEDsjyH-G2BbxQiqDWqr7R9xoeiR6-_IAb9pa5INkbG0QIgMS4ez3mo_Y2BZAa_3q3Ut_w5nnuSXCJg\",\"userName\":\"BUNDLE_FRC\"}}"
+}
+'Auth successful. User:', 'BUNDLE_FRC'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Error": "Stream closed with error code NGHTTP2_REFUSED_STREAM",
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MjoxNzc5ODc0MTEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDExMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQxMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.smPJ_ZzEEDsjyH-G2BbxQiqDWqr7R9xoeiR6-_IAb9pa5INkbG0QIgMS4ez3mo_Y2BZAa_3q3Ut_w5nnuSXCJg",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "c4ff9a1c-94f6-4058-83ee-491b053bbcbd",
+    "host": "bsnlapigateway.pyrogroup.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive"
+  }
+}
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 50143
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MjoxNzc5ODc0MTEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDExMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQxMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.smPJ_ZzEEDsjyH-G2BbxQiqDWqr7R9xoeiR6-_IAb9pa5INkbG0QIgMS4ez3mo_Y2BZAa_3q3Ut_w5nnuSXCJg",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "df61225b-24a8-4b8d-9af8-dca4975044ec",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:14:50 GMT",
+    "x-envoy-upstream-service-time": "5",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDE5MDEyNSwiY3JlYXRlZCI6MTc3OTg3MzI5MDEyNSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQxOTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.4jKFIV1-DocdUJ0jl6RKR_iJKjYoaigd1TJfhB87ntjItgRdkqxp54zZsEHutTG7DGuvUVlsdzpOXR58lIjBxw\"}}"
+}
+'Access token refreshed successfully'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 50143
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDE5MDEyNSwiY3JlYXRlZCI6MTc3OTg3MzI5MDEyNSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQxOTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.4jKFIV1-DocdUJ0jl6RKR_iJKjYoaigd1TJfhB87ntjItgRdkqxp54zZsEHutTG7DGuvUVlsdzpOXR58lIjBxw",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "5f312f9a-0b4a-4c68-9057-7e9776cbb103",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:15:05 GMT",
+    "x-envoy-upstream-service-time": "7",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDIwNTQ1NywiY3JlYXRlZCI6MTc3OTg3MzMwNTQ1NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQyMDUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.XCNcEkMfIBih_f2T0eBgeTemar5O2lmN_89G9c6q2MzmjNi8OYPl3UW9TGwePzu8Wv-OiAeXuf3-3KnYRk9Ypw\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 50154
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDIwNTQ1NywiY3JlYXRlZCI6MTc3OTg3MzMwNTQ1NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQyMDUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.XCNcEkMfIBih_f2T0eBgeTemar5O2lmN_89G9c6q2MzmjNi8OYPl3UW9TGwePzu8Wv-OiAeXuf3-3KnYRk9Ypw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f83151d0-d448-4f8c-b231-ab64cae6af07",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:15:05 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDIwNTQ1NywiY3JlYXRlZCI6MTc3OTg3MzMwNTQ1NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQyMDUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.XCNcEkMfIBih_f2T0eBgeTemar5O2lmN_89G9c6q2MzmjNi8OYPl3UW9TGwePzu8Wv-OiAeXuf3-3KnYRk9Ypw\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODczMzY1NTQ0IiwiZXhwaXJlZCI6MTc3OTg3MzM2NTU0NCwiY3JlYXRlZCI6MTc3OTg3MzMwNTU0NCwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzMzNjUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.5x7crrwaYNeepVSFsdlOPLPaupA7py-pkAgDzvcUyNk1ZgFAP2Bqx0VZi8fJziNL2VtdD1-NnoUvX2dcU8Iekw\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+'ClientTxnId:', 'TEST73366437'
+'Plain body:', '{"dealerMsisdn":"8903696189","destMsisdn":"9443400904","amount":1,"clientTxnId":"TEST73366437","mpin":"147258"}'
+'Encrypted payload:', 'rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesmGlegBo3udV4EpAk5/q+lh0i9zg2tZZXecX1ZlruKlXsY6v7qToyBIDJ/ToEYYSenkTpEdLAxzxPyrpZs9bBsCs+SuK7BEDyg'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/recharge: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 50282
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDIwNTQ1NywiY3JlYXRlZCI6MTc3OTg3MzMwNTQ1NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQyMDUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.XCNcEkMfIBih_f2T0eBgeTemar5O2lmN_89G9c6q2MzmjNi8OYPl3UW9TGwePzu8Wv-OiAeXuf3-3KnYRk9Ypw",
+    "actiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODczMzY1NTQ0IiwiZXhwaXJlZCI6MTc3OTg3MzM2NTU0NCwiY3JlYXRlZCI6MTc3OTg3MzMwNTU0NCwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzMzNjUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.5x7crrwaYNeepVSFsdlOPLPaupA7py-pkAgDzvcUyNk1ZgFAP2Bqx0VZi8fJziNL2VtdD1-NnoUvX2dcU8Iekw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "6c85c38d-1f15-465f-8f3c-7898c9d369d4",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "150",
+    ":path": "/epin-vendor-api/recharge",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesmGlegBo3udV4EpAk5/q+lh0i9zg2tZZXecX1ZlruKlXsY6v7qToyBIDJ/ToEYYSenkTpEdLAxzxPyrpZs9bBsCs+SuK7BEDyg",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:16:06 GMT",
+    "x-envoy-upstream-service-time": "285",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2a7oaixxerD1K4FCb5XJRe78Rqr+fSuRPijpJVL5/qiSxjq/upOjIEgMn9OgRhhJ6eROkR0sDHPGbJsyro3b8dIwv974MJxdTVK15Gkk0bWJRxOoVAIa1H8EATpIsUNcOEwE8FD3jU1la9+b+XhR5ozcCGnmJuYYHGjZ1QCFBnMo"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2a7oaixxerD1K4FCb5XJRe78Rqr+fSuRPijpJVL5/qiSxjq/upOjIEgMn9OgRhhJ6eROkR0sDHPGbJsyro3b8dIwv974MJxdTVK15Gkk0bWJRxOoVAIa1H8EATpIsUNcOEwE8FD3jU1la9+b+XhR5ozcCGnmJuYYHGjZ1QCFBnMo'
+'Decrypted response:', '{"statusCode":2002,"status":"IN_PROCESS","message":"Request is registered","data":{"destMsisdn":"9443400904","amount":1.0,"clientTxnId":"TEST73366437","transactionId":43383,"serviceType":"recharge","circle":"Tamilnadu"}}'
+'Recharge registered. Pyro txnId:', 43383
+'Wait ~45 seconds then run status check'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51386
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NDIwNTQ1NywiY3JlYXRlZCI6MTc3OTg3MzMwNTQ1NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzQyMDUsInVzZXJJZCI6NTU1NDQ0MzMzMH0.XCNcEkMfIBih_f2T0eBgeTemar5O2lmN_89G9c6q2MzmjNi8OYPl3UW9TGwePzu8Wv-OiAeXuf3-3KnYRk9Ypw",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "c3683a70-93a3-411f-b558-f4434970db6e",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:29:26 GMT",
+    "x-envoy-upstream-service-time": "7",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTA2NjQ0NCwiY3JlYXRlZCI6MTc3OTg3NDE2NjQ0NCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUwNjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.fdZ_oSlRAgkk2ChlU9p7xLOf7fzm4S5aJ-KrLDIz5XGZCYgOXpNPKY_mBGBSSJ9iDuTmuTzlYotDfxK2VU87Jg\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51387
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTA2NjQ0NCwiY3JlYXRlZCI6MTc3OTg3NDE2NjQ0NCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUwNjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.fdZ_oSlRAgkk2ChlU9p7xLOf7fzm4S5aJ-KrLDIz5XGZCYgOXpNPKY_mBGBSSJ9iDuTmuTzlYotDfxK2VU87Jg",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "dd0035e5-538c-4bdc-8320-dc8d9a10115b",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:29:26 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTA2NjQ0NCwiY3JlYXRlZCI6MTc3OTg3NDE2NjQ0NCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUwNjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.fdZ_oSlRAgkk2ChlU9p7xLOf7fzm4S5aJ-KrLDIz5XGZCYgOXpNPKY_mBGBSSJ9iDuTmuTzlYotDfxK2VU87Jg\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc0MjI2NTMwIiwiZXhwaXJlZCI6MTc3OTg3NDIyNjUzMCwiY3JlYXRlZCI6MTc3OTg3NDE2NjUzMCwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzQyMjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.OFALJj-BRlPqzEHZ4p89w8DZFKKM8Vro7C5kBjF8o66knYE4sC-Nbto40Hn-lkpso-koeEc8k-VResSSSEa9bQ\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+'ClientTxnId:', 'TEST74171582'
+'Plain body:', '{"dealerMsisdn":"8903696189","destMsisdn":"9489902775","amount":1,"clientTxnId":"TEST74171582","mpin":"147258"}'
+'Encrypted payload:', 'rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXecX1ZlruKlXsY6v7qToyBJc1gXsqr8lEJZkkLZ1RUXSPyrpZs9bBsCs+SuK7BEDyg'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/recharge: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51386
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTA2NjQ0NCwiY3JlYXRlZCI6MTc3OTg3NDE2NjQ0NCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUwNjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.fdZ_oSlRAgkk2ChlU9p7xLOf7fzm4S5aJ-KrLDIz5XGZCYgOXpNPKY_mBGBSSJ9iDuTmuTzlYotDfxK2VU87Jg",
+    "actiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc0MjI2NTMwIiwiZXhwaXJlZCI6MTc3OTg3NDIyNjUzMCwiY3JlYXRlZCI6MTc3OTg3NDE2NjUzMCwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzQyMjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.OFALJj-BRlPqzEHZ4p89w8DZFKKM8Vro7C5kBjF8o66knYE4sC-Nbto40Hn-lkpso-koeEc8k-VResSSSEa9bQ",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "181fd189-b27d-40ad-9a23-363a3934e635",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "150",
+    ":path": "/epin-vendor-api/recharge",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXecX1ZlruKlXsY6v7qToyBJc1gXsqr8lEJZkkLZ1RUXSPyrpZs9bBsCs+SuK7BEDyg",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:29:31 GMT",
+    "x-envoy-upstream-service-time": "242",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2lKyujpGR+SCngg5HDJemnL8Rqr+fSuRPijpJVL5/qiSxjq/upOjIElzWBeyqvyUQlmSQtnVFRdKbJsyro3b8dIwv974MJxdTyfJIWbyIAopRxOoVAIa1H8EATpIsUNcOEwE8FD3jU1la9+b+XhR5ozcCGnmJuYYHGjZ1QCFBnMo"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2lKyujpGR+SCngg5HDJemnL8Rqr+fSuRPijpJVL5/qiSxjq/upOjIElzWBeyqvyUQlmSQtnVFRdKbJsyro3b8dIwv974MJxdTyfJIWbyIAopRxOoVAIa1H8EATpIsUNcOEwE8FD3jU1la9+b+XhR5ozcCGnmJuYYHGjZ1QCFBnMo'
+'Decrypted response:', '{"statusCode":2002,"status":"IN_PROCESS","message":"Request is registered","data":{"destMsisdn":"9489902775","amount":1.0,"clientTxnId":"TEST74171582","transactionId":43384,"serviceType":"recharge","circle":"Tamilnadu"}}'
+'Recharge registered. Pyro txnId:', 43384
+'Wait ~45 seconds then run status check'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51683
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTA2NjQ0NCwiY3JlYXRlZCI6MTc3OTg3NDE2NjQ0NCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUwNjYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.fdZ_oSlRAgkk2ChlU9p7xLOf7fzm4S5aJ-KrLDIz5XGZCYgOXpNPKY_mBGBSSJ9iDuTmuTzlYotDfxK2VU87Jg",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "518beab4-9ee6-4ef0-a811-60b4014a0611",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:33:36 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTMxNjA2NywiY3JlYXRlZCI6MTc3OTg3NDQxNjA2NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUzMTYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.9wTMTUYJsHYpIJe5CZnEGGLmrIiq8ZcGlSEnYHGfFU_3-FfpznNf0C_XjoHj1UzxRpBxhuzcAvoQPqP2KbvwXw\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51684
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTMxNjA2NywiY3JlYXRlZCI6MTc3OTg3NDQxNjA2NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUzMTYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.9wTMTUYJsHYpIJe5CZnEGGLmrIiq8ZcGlSEnYHGfFU_3-FfpznNf0C_XjoHj1UzxRpBxhuzcAvoQPqP2KbvwXw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f337931d-b0a0-47ad-80b5-4ad64113db41",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:33:36 GMT",
+    "x-envoy-upstream-service-time": "3",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTMxNjA2NywiY3JlYXRlZCI6MTc3OTg3NDQxNjA2NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUzMTYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.9wTMTUYJsHYpIJe5CZnEGGLmrIiq8ZcGlSEnYHGfFU_3-FfpznNf0C_XjoHj1UzxRpBxhuzcAvoQPqP2KbvwXw\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc0NDc2MTQ5IiwiZXhwaXJlZCI6MTc3OTg3NDQ3NjE0OSwiY3JlYXRlZCI6MTc3OTg3NDQxNjE0OSwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzQ0NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.-fdmw_H2s6SPQHkk_FfaDItJZE2yfl2EZ0uWrB4UdG_xgPDLj1GwiqqZ9_ybtu8JPxcBhYgcAQgVNAtxRidAaA\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+'ClientTxnId:', 'TEST74420761'
+'Plain body:', '{"dealerMsisdn":"8903696189","destMsisdn":"9489902775","amount":153,"clientTxnId":"TEST74420761","mpin":"147258"}'
+'Encrypted payload:', 'rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXTA/PJyTZnefHqGjU+VoKnSOW56b6ducdXQ8ghvLF23cWvTOzLh4q0muEGc4zGW2EbA/jcn3jr3e'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/recharge: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 51683
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTMxNjA2NywiY3JlYXRlZCI6MTc3OTg3NDQxNjA2NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUzMTYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.9wTMTUYJsHYpIJe5CZnEGGLmrIiq8ZcGlSEnYHGfFU_3-FfpznNf0C_XjoHj1UzxRpBxhuzcAvoQPqP2KbvwXw",
+    "actiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc0NDc2MTQ5IiwiZXhwaXJlZCI6MTc3OTg3NDQ3NjE0OSwiY3JlYXRlZCI6MTc3OTg3NDQxNjE0OSwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzQ0NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.-fdmw_H2s6SPQHkk_FfaDItJZE2yfl2EZ0uWrB4UdG_xgPDLj1GwiqqZ9_ybtu8JPxcBhYgcAQgVNAtxRidAaA",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f4c7b2cf-ab54-432d-9df7-5fd946e55a91",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "160",
+    ":path": "/epin-vendor-api/recharge",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXTA/PJyTZnefHqGjU+VoKnSOW56b6ducdXQ8ghvLF23cWvTOzLh4q0muEGc4zGW2EbA/jcn3jr3e",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:33:41 GMT",
+    "x-envoy-upstream-service-time": "199",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2lKyujpGR+SCngg5HDJemnHzZXdKy9qrTJm7Gm9W1/v8eoaNT5WgqdI5bnpvp25x1dDyCG8sXbdxMJNuaeOsV6IIIPx0U/1I7EQ+E4ffBKA0OeOaV/324QgA+e7QXaylhsTDbWRtOccBza93Tp9ig2+a12h0nipOCMe8JqvXVz60"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G3Gh7Z9jRASxpVmzJl/JVOGDQFPe6lPlYuEsT63ihZ4MwS/uwdxb446od8F3luqTRU5tqMpnhI3fb0MJkS6X03XjHdpmJJlpWN6o552dvGs2lKyujpGR+SCngg5HDJemnHzZXdKy9qrTJm7Gm9W1/v8eoaNT5WgqdI5bnpvp25x1dDyCG8sXbdxMJNuaeOsV6IIIPx0U/1I7EQ+E4ffBKA0OeOaV/324QgA+e7QXaylhsTDbWRtOccBza93Tp9ig2+a12h0nipOCMe8JqvXVz60'
+'Decrypted response:', '{"statusCode":2002,"status":"IN_PROCESS","message":"Request is registered","data":{"destMsisdn":"9489902775","amount":153.0,"clientTxnId":"TEST74420761","transactionId":43385,"serviceType":"recharge","circle":"Tamilnadu"}}'
+'Recharge registered. Pyro txnId:', 43385
+'Wait ~45 seconds then run status check'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52319
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTMxNjA2NywiY3JlYXRlZCI6MTc3OTg3NDQxNjA2NywidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzUzMTYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.9wTMTUYJsHYpIJe5CZnEGGLmrIiq8ZcGlSEnYHGfFU_3-FfpznNf0C_XjoHj1UzxRpBxhuzcAvoQPqP2KbvwXw",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "40178953-6c36-4f93-b940-5854f365f206",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:42:56 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTg3Njg4OCwiY3JlYXRlZCI6MTc3OTg3NDk3Njg4OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzU4NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.iv16et6rjZSn_wG_XxXnvKxCgdB3Ts3stHDTVi5l3Q1-TjhVryDg9E7exxFVWuM2Grlw2djgOFygKdeI_xm36w\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52320
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTg3Njg4OCwiY3JlYXRlZCI6MTc3OTg3NDk3Njg4OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzU4NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.iv16et6rjZSn_wG_XxXnvKxCgdB3Ts3stHDTVi5l3Q1-TjhVryDg9E7exxFVWuM2Grlw2djgOFygKdeI_xm36w",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "b1bb1f8a-cb7b-438c-a576-4b74b8e2d492",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:42:56 GMT",
+    "x-envoy-upstream-service-time": "3",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTg3Njg4OCwiY3JlYXRlZCI6MTc3OTg3NDk3Njg4OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzU4NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.iv16et6rjZSn_wG_XxXnvKxCgdB3Ts3stHDTVi5l3Q1-TjhVryDg9E7exxFVWuM2Grlw2djgOFygKdeI_xm36w\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc1MDM2OTg5IiwiZXhwaXJlZCI6MTc3OTg3NTAzNjk4OSwiY3JlYXRlZCI6MTc3OTg3NDk3Njk4OSwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzUwMzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.-DnY4MI9LKrl6kN4gUO-kO31zNjyiN7rZWZcrZdexI4HSJ1dOu_bDA4eQQe4aSJSGKnnZSpOMov5YOqEIHO9sA\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+'ClientTxnId:', 'TEST74990211'
+'Plain body:', '{"dealerMsisdn":"8903696189","destMsisdn":"9489902775","amount":500,"clientTxnId":"TEST74990211","mpin":"147258"}'
+'Encrypted payload:', 'rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXan74dl0zTsEHqGjU+VoKnSOW56b6ducdcoIi5kcRuDXWvTOzLh4q0muEGc4zGW2EbA/jcn3jr3e'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/recharge: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52319
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTg3Njg4OCwiY3JlYXRlZCI6MTc3OTg3NDk3Njg4OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzU4NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.iv16et6rjZSn_wG_XxXnvKxCgdB3Ts3stHDTVi5l3Q1-TjhVryDg9E7exxFVWuM2Grlw2djgOFygKdeI_xm36w",
+    "actiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc1MDM2OTg5IiwiZXhwaXJlZCI6MTc3OTg3NTAzNjk4OSwiY3JlYXRlZCI6MTc3OTg3NDk3Njk4OSwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzUwMzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.-DnY4MI9LKrl6kN4gUO-kO31zNjyiN7rZWZcrZdexI4HSJ1dOu_bDA4eQQe4aSJSGKnnZSpOMov5YOqEIHO9sA",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "034f4807-aebd-4545-ad44-d13a858b7020",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "160",
+    ":path": "/epin-vendor-api/recharge",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXan74dl0zTsEHqGjU+VoKnSOW56b6ducdcoIi5kcRuDXWvTOzLh4q0muEGc4zGW2EbA/jcn3jr3e",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:43:10 GMT",
+    "x-envoy-upstream-service-time": "223",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3OfXgL2X+xNiiTJGArYxvWZ6qrdgUhcjh4GhakOQrbkHuecOzNjA/i5avyBS4RPYu/3fSw4GT6WkpuO9wlrH2cSba0DV0dccQmXK8TOw/zdoEiUZai6IISs7cxXre4Xe4SgWeW4tPFCSxLA/jcn3jr3e"
+}
+'Raw response:', 'zjwQdCvT3OfXgL2X+xNiiTJGArYxvWZ6qrdgUhcjh4GhakOQrbkHuecOzNjA/i5avyBS4RPYu/3fSw4GT6WkpuO9wlrH2cSba0DV0dccQmXK8TOw/zdoEiUZai6IISs7cxXre4Xe4SgWeW4tPFCSxLA/jcn3jr3e'
+'Decrypted response:', '{"statusCode":405,"status":"FAILED","message":"You have less Stock and it is not sufficient to do this recharge"}'
+'Recharge failed:', 405, 'You have less Stock and it is not sufficient to do this recharge'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52533
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NTg3Njg4OCwiY3JlYXRlZCI6MTc3OTg3NDk3Njg4OCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzU4NzYsInVzZXJJZCI6NTU1NDQ0MzMzMH0.iv16et6rjZSn_wG_XxXnvKxCgdB3Ts3stHDTVi5l3Q1-TjhVryDg9E7exxFVWuM2Grlw2djgOFygKdeI_xm36w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "bfc88658-e75a-4b9b-b100-255793d7b23a",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:45:14 GMT",
+    "x-envoy-upstream-service-time": "5",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAxNDQ4MiwiY3JlYXRlZCI6MTc3OTg3NTExNDQ4MiwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMTQsInVzZXJJZCI6NTU1NDQ0MzMzMH0.FoZlNfYQeSmxqW39LW-BwrbMMynkFI0wtqFyIPeLno2MuL9ptkkOgQbjZgwARVhHMfoKiMa70mh2i43OqXQ5sA\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52534
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAxNDQ4MiwiY3JlYXRlZCI6MTc3OTg3NTExNDQ4MiwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMTQsInVzZXJJZCI6NTU1NDQ0MzMzMH0.FoZlNfYQeSmxqW39LW-BwrbMMynkFI0wtqFyIPeLno2MuL9ptkkOgQbjZgwARVhHMfoKiMa70mh2i43OqXQ5sA",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "a8356b4f-4c41-4637-aef4-dae891fba165",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:45:14 GMT",
+    "x-envoy-upstream-service-time": "3",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAxNDQ4MiwiY3JlYXRlZCI6MTc3OTg3NTExNDQ4MiwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMTQsInVzZXJJZCI6NTU1NDQ0MzMzMH0.FoZlNfYQeSmxqW39LW-BwrbMMynkFI0wtqFyIPeLno2MuL9ptkkOgQbjZgwARVhHMfoKiMa70mh2i43OqXQ5sA\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc1MTc0ODA1IiwiZXhwaXJlZCI6MTc3OTg3NTE3NDgwNSwiY3JlYXRlZCI6MTc3OTg3NTExNDgwNSwidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzUxNzQsInVzZXJJZCI6NTU1NDQ0MzMzMH0.WBdag9MWT_mCOjGxLjvfgeGB3FiF4_hCZwgdUNnu6jze33kiovXh0OFuu33XnzAU0yPJzQXNt5fmU6zQDOmc7A\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52533
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAxNDQ4MiwiY3JlYXRlZCI6MTc3OTg3NTExNDQ4MiwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMTQsInVzZXJJZCI6NTU1NDQ0MzMzMH0.FoZlNfYQeSmxqW39LW-BwrbMMynkFI0wtqFyIPeLno2MuL9ptkkOgQbjZgwARVhHMfoKiMa70mh2i43OqXQ5sA",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "4948d044-7af9-4385-9f46-bf213fe59180",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:45:38 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAzODc2MCwiY3JlYXRlZCI6MTc3OTg3NTEzODc2MCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMzgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.cRXc9yMVz9BFoMTusrdKj6Bn6BRQxN2YSj-4lhPpf_xf0ar6Yj3wU-wdJrGjvyMQ5nWJ7B5ia6fPcl8Xrq7-2g\"}}"
+}
+'accessToken auto-refreshed'
+GET https://bsnlapigateway.pyrogroup.com/auth-api/generate-action-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52534
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAzODc2MCwiY3JlYXRlZCI6MTc3OTg3NTEzODc2MCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMzgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.cRXc9yMVz9BFoMTusrdKj6Bn6BRQxN2YSj-4lhPpf_xf0ar6Yj3wU-wdJrGjvyMQ5nWJ7B5ia6fPcl8Xrq7-2g",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "8038e492-c5dc-4bbf-b2a6-2b662d137ee3",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/generate-action-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:45:38 GMT",
+    "x-envoy-upstream-service-time": "4",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"generate-action-token\",\"data\":{\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAzODc2MCwiY3JlYXRlZCI6MTc3OTg3NTEzODc2MCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMzgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.cRXc9yMVz9BFoMTusrdKj6Bn6BRQxN2YSj-4lhPpf_xf0ar6Yj3wU-wdJrGjvyMQ5nWJ7B5ia6fPcl8Xrq7-2g\",\"actionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc1MTk4ODIzIiwiZXhwaXJlZCI6MTc3OTg3NTE5ODgyMywiY3JlYXRlZCI6MTc3OTg3NTEzODgyMywidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzUxOTgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.41p415MbE1WuG2P5BlXWIHwFm3tOXmfQkptY_17QSN4ZXoAWAX-sG3rOKOMzlxCcwyMYJbt4aDmmeDRrI2Kcnw\"}}"
+}
+'actionToken saved — 60 seconds on the clock!'
+'ClientTxnId:', 'TEST75142922'
+'Plain body:', '{"dealerMsisdn":"8903696189","destMsisdn":"9489902775","amount":107,"clientTxnId":"TEST75142922","mpin":"147259"}'
+'Encrypted payload:', 'rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXa8yWybtW6bhHqGjU+VoKnSOW56b6ducdX7mqkcnA8KnWvTOzLh4q0mDzpx5GEXCxLA/jcn3jr3e'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/recharge: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52533
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAzODc2MCwiY3JlYXRlZCI6MTc3OTg3NTEzODc2MCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMzgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.cRXc9yMVz9BFoMTusrdKj6Bn6BRQxN2YSj-4lhPpf_xf0ar6Yj3wU-wdJrGjvyMQ5nWJ7B5ia6fPcl8Xrq7-2g",
+    "actiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MzoxNzc5ODc1MTk4ODIzIiwiZXhwaXJlZCI6MTc3OTg3NTE5ODgyMywiY3JlYXRlZCI6MTc3OTg3NTEzODgyMywidG9rZW5UeXBlIjozLCJleHAiOjE3Nzk4NzUxOTgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.41p415MbE1WuG2P5BlXWIHwFm3tOXmfQkptY_17QSN4ZXoAWAX-sG3rOKOMzlxCcwyMYJbt4aDmmeDRrI2Kcnw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "13858045-33ae-4fc1-96ae-684e8baef2ad",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "160",
+    ":path": "/epin-vendor-api/recharge",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "rSvlAsTvzRveqOednbxrNnBOM9mImm7OTPqG3StwkZ+LF6TWVvIesh8YZmBzHwsR8CVZ6+sl2rZ0i9zg2tZZXa8yWybtW6bhHqGjU+VoKnSOW56b6ducdX7mqkcnA8KnWvTOzLh4q0mDzpx5GEXCxLA/jcn3jr3e",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:45:42 GMT",
+    "x-envoy-upstream-service-time": "50",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Of1BV3NShyZ41mONk24LEKUN0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlEzEvdmkJr0rP4YXgKF/O3cPv20pnoovlRbx4fcG1wZiGr34up0m0ww"
+}
+'Raw response:', 'zjwQdCvT3Of1BV3NShyZ41mONk24LEKUN0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlEzEvdmkJr0rP4YXgKF/O3cPv20pnoovlRbx4fcG1wZiGr34up0m0ww'
+'Decrypted response:', '{"statusCode":5012,"status":"FAILED","message":"Sorry You have Entered Invalid Mpin"}'
+'Recharge failed:', 5012, 'Sorry You have Entered Invalid Mpin'
+POST https://bsnlapigateway.pyrogroup.com/epin-vendor-api/transaction-status: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52761
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "A7B6C5D4E3F2G1",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc3OTg3NjAzODc2MCwiY3JlYXRlZCI6MTc3OTg3NTEzODc2MCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYwMzgsInVzZXJJZCI6NTU1NDQ0MzMzMH0.cRXc9yMVz9BFoMTusrdKj6Bn6BRQxN2YSj-4lhPpf_xf0ar6Yj3wU-wdJrGjvyMQ5nWJ7B5ia6fPcl8Xrq7-2g",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTU1NDQ0MzMzMCIsImF1ZCI6IjU1NTQ0NDMzMzA6MToxNzgwNDc4MDEwNzk4IiwiZXhwaXJlZCI6MTc4MDQ3ODAxMDc5OCwiY3JlYXRlZCI6MTc3OTg3MzIxMDc5OCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0NzgwMTAsInVzZXJJZCI6NTU1NDQ0MzMzMH0.0gX1X9ubT6t2R5R0l00P4LyEhWRdfvASWeu9m-NJpjz8IW5MElpy38GP9gLK1U87v6EEEGFFVQpad7blO5O48w",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "4b059f8b-33c3-4efb-a098-083c0bb8334b",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "75",
+    ":path": "/epin-vendor-api/transaction-status",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "m4FVBsOPbkWCCD8dFP9SOxEPhOH3wSgNWKCEitkRG/JOQpIBqS+0rQfXKQnhuhMuAEQnUuMdLZo",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:48:29 GMT",
+    "x-envoy-upstream-service-time": "34",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GIxcV85ggu5IL0A+tbJKviQ6HTx9XNY5tp6dzvUF2lQbe9cCgv0HrZJ7vpL6GugbCX2CykXy2OdsJR0sWrx0cDAPrIGPtxkT8TORUWVeBgvxj2CBnmQCoexKVKBpQt+2VP/el9SgqOZjngadVnRG8fdce8bM+OuJJQJPFZT1/hnyIzcLFPFO7ZzbdjskSjwP7zGdH9hulbOSQNe3DihTf8pi7axh5TkudwCt+x0aYO14Mjiexnu8fbPSWbxAYjDgmnSYcrvUJWcU9/f4yiRXmQEAiTXjfcGJ1D+wpO7wkpQZK6KcjQ5y/3+t8bKV4+8ICK3QHwD26+yo"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GIxcV85ggu5IL0A+tbJKviQ6HTx9XNY5tp6dzvUF2lQbe9cCgv0HrZJ7vpL6GugbCX2CykXy2OdsJR0sWrx0cDAPrIGPtxkT8TORUWVeBgvxj2CBnmQCoexKVKBpQt+2VP/el9SgqOZjngadVnRG8fdce8bM+OuJJQJPFZT1/hnyIzcLFPFO7ZzbdjskSjwP7zGdH9hulbOSQNe3DihTf8pi7axh5TkudwCt+x0aYO14Mjiexnu8fbPSWbxAYjDgmnSYcrvUJWcU9/f4yiRXmQEAiTXjfcGJ1D+wpO7wkpQZK6KcjQ5y/3+t8bKV4+8ICK3QHwD26+yo'
+'Decrypted response:', '{"statusCode":2000,"status":"SUCCESS","message":"Recharge successful","data":{"clientTxnId":"TEST74420761","transactionId":"43385","serviceType":"recharge","destMsisdn":"9489902775","amount":153.0,"status":"SUCCESS","dealerBalanceBefore":446.28,"dealerBalanceAfter":293.28,"circle":"Tamilnadu"}}'
+'SUCCESS — destMsisdn:', '9489902775', '| amount:', 153
+'Balance before:', 446.28, '→ after:', 293.28
+'Client ID:', 'TEST75466026'
+'Plain Body:', '{"clientId":"TEST75466026","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":1,"mpin":"147258","remarks":"fancysale","serviceType":"FANCYSALE"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwrR18Aj0084ijK6PHrVBvmzb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXFOTnWVUqKvoBkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52950
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTcxMjg0NDE2NSwiY3JlYXRlZCI6MTc3OTcxMTk0NDE2NSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk3MTI4NDQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.xlDqr0ZQZJQNW0rbCgflsDnPsTjtQ4Ho_EXq0pWUU31yR-FJBDvlY8XOSsS8jIfx3ENRed-AbchClSFolxnymQ",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "6917f866-3135-40ab-aeb7-01f343c36c02",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "214",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwrR18Aj0084ijK6PHrVBvmzb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXFOTnWVUqKvoBkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g",
+  "Response Headers": {
+    ":status": 401,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:51:06 GMT",
+    "x-envoy-upstream-service-time": "6",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":5000,\"status\":\"FAILED\",\"message\":\"Invalid token\"}"
+}
+'Raw response:', '{"statusCode":5000,"status":"FAILED","message":"Invalid token"}'
+'Decrypt/Parse Error:', { type: 'Error', name: 'Error', message: 'Malformed UTF-8 data' }
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52950
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTcxMjg0NDE2NSwiY3JlYXRlZCI6MTc3OTcxMTk0NDE2NSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk3MTI4NDQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.xlDqr0ZQZJQNW0rbCgflsDnPsTjtQ4Ho_EXq0pWUU31yR-FJBDvlY8XOSsS8jIfx3ENRed-AbchClSFolxnymQ",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "89bb204a-3a67-4757-aae2-fadf6b8dff49",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:51:14 GMT",
+    "x-envoy-upstream-service-time": "3",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3NjM3NDk4NSwiY3JlYXRlZCI6MTc3OTg3NTQ3NDk4NSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYzNzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.mXWAOpA68_JQuxPeQO5WNNE7WaNovbl0AgbJNyApZKTXr_PUfbEptTV5YWFVDtc51e_mkNA2NNuOnd3ZNYQgAQ\"}}"
+}
+'Access token refreshed successfully'
+'Client ID:', 'TEST75481842'
+'Plain Body:', '{"clientId":"TEST75481842","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":1,"mpin":"147258","remarks":"fancysale","serviceType":"FANCYSALE"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwgNXIZIpzlYPoHLabfB3NYXb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXFOTnWVUqKvoBkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 52950
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3NjM3NDk4NSwiY3JlYXRlZCI6MTc3OTg3NTQ3NDk4NSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYzNzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.mXWAOpA68_JQuxPeQO5WNNE7WaNovbl0AgbJNyApZKTXr_PUfbEptTV5YWFVDtc51e_mkNA2NNuOnd3ZNYQgAQ",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "7877d624-2ec6-4759-80bb-fda76d3b1f70",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "214",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwgNXIZIpzlYPoHLabfB3NYXb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXFOTnWVUqKvoBkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:51:24 GMT",
+    "x-envoy-upstream-service-time": "2908",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GQXJZhBjK7jYjnaqkKNsowNCjhuNwv+txt+GXwhFlcrM9VQnm00xJBTBfvx/uhpHAzLesvm/2s2dX9Q0WowtWAenbWeETZjMwUqonqor1KwCDQ/EzNmCFwysRG/LRfhElIj1mZX03NEKCthj50m8IxExrYzOdiYNTevGnOwB3nLOwhlQCrFL4HVbnAfTF9Vg+ernfSatpIU/ykEB/z+d11feeVGC+dQHnUTSwHcU/D8wCUsanStZLAWfiZ4o8HWdGQgKLC+AN5cI"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GQXJZhBjK7jYjnaqkKNsowNCjhuNwv+txt+GXwhFlcrM9VQnm00xJBTBfvx/uhpHAzLesvm/2s2dX9Q0WowtWAenbWeETZjMwUqonqor1KwCDQ/EzNmCFwysRG/LRfhElIj1mZX03NEKCthj50m8IxExrYzOdiYNTevGnOwB3nLOwhlQCrFL4HVbnAfTF9Vg+ernfSatpIU/ykEB/z+d11feeVGC+dQHnUTSwHcU/D8wCUsanStZLAWfiZ4o8HWdGQgKLC+AN5cI'
+'Decrypted response:', '{"statusCode":2000,"status":"SUCCESS","message":"Transaction successful","data":{"pyroId":89311635,"timeStamp":"2026-05-27 15:21:24","clientId":"TEST75481842","sourceMsisdn":"8903696189","amount":1.0,"balanceBefore":293.28,"balanceAfter":292.28}}'
+'Wallet adjustment SUCCESS'
+'Pyro ID:', 89311635
+'Balance Before:', 293.28
+'Balance After:', 292.28
+GET https://bsnlapigateway.pyrogroup.com/auth-api/refresh-access-token: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53444
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3NjM3NDk4NSwiY3JlYXRlZCI6MTc3OTg3NTQ3NDk4NSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzYzNzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.mXWAOpA68_JQuxPeQO5WNNE7WaNovbl0AgbJNyApZKTXr_PUfbEptTV5YWFVDtc51e_mkNA2NNuOnd3ZNYQgAQ",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f5db4485-7081-42d8-a774-eed86917b47d",
+    "accept-encoding": "gzip, deflate, br",
+    ":path": "/auth-api/refresh-access-token",
+    ":method": "GET",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 09:57:54 GMT",
+    "x-envoy-upstream-service-time": "3",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"refresh-access-token\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3Njc3NDAxOSwiY3JlYXRlZCI6MTc3OTg3NTg3NDAxOSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY3NzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.nCHl2qh0fuAriliNV-n-DTyCbywtIC0g6Ef9t0jHA_R_ZoPZ_xQw82jBLFMI4ZzpdeqBhbe-Ab32ql7exy-6uw\"}}"
+}
+'Access token refreshed successfully'
+'Client ID:', 'TEST75878963'
+'Plain Body:', '{"clientId":"TEST75878963","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":1,"mpin":"147259","remarks":"fancysale","serviceType":"FANCYSALE"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwjQwSxMpC/nQBOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXHYQ3HICfL/BRkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53444
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3Njc3NDAxOSwiY3JlYXRlZCI6MTc3OTg3NTg3NDAxOSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY3NzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.nCHl2qh0fuAriliNV-n-DTyCbywtIC0g6Ef9t0jHA_R_ZoPZ_xQw82jBLFMI4ZzpdeqBhbe-Ab32ql7exy-6uw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "2e0d77ad-a8be-4ecd-bfbb-639c7e6c98d4",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "214",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwjQwSxMpC/nQBOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwmN6XyRA7MsX9J/NSi9qKXHYQ3HICfL/BRkqPgfjEAOmMRRBlhUWv5vTdFBgBczUST4ulhW697XO8/DJYkAfzIDgEUamEfIO9g",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:57:59 GMT",
+    "x-envoy-upstream-service-time": "13",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGljLSuiU6RTnV4VVHtOgn0IJojoyUfcJj/8IV+RflhOWIVT722R3HSED3mQfyeJScg"
+}
+'Raw response:', 'zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGljLSuiU6RTnV4VVHtOgn0IJojoyUfcJj/8IV+RflhOWIVT722R3HSED3mQfyeJScg'
+'Decrypted response:', '{"statusCode":5000,"status":"FAILED","message":"Invalid mpin for source msisdn: 8903696189"}'
+'Wallet adjustment FAILED:', 5000, 'Invalid mpin for source msisdn: 8903696189'
+'Client ID:', 'TEST75944235'
+'Plain Body:', '{"clientId":"TEST75944235","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":500,"mpin":"147258","remarks":"fancysale","serviceType":"FANCYSALE"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwvDCa9F5daXoAi3APtXZLLXb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwixP0WGV71Ovob0OzaAnSgTVmF2n1TiEoR8F6dy3eKF3HJJyysp4GnA6yOgeTMPCLISgmh4BfX8omQ536ha28/GXatG9uHHeCA'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53524
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "OIUYT65DSFGBVN",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc3OTg3Njc3NDAxOSwiY3JlYXRlZCI6MTc3OTg3NTg3NDAxOSwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY3NzQsInVzZXJJZCI6NTQ2NzM4OTI1OH0.nCHl2qh0fuAriliNV-n-DTyCbywtIC0g6Ef9t0jHA_R_ZoPZ_xQw82jBLFMI4ZzpdeqBhbe-Ab32ql7exy-6uw",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiNTQ2NzM4OTI1OCIsImF1ZCI6IjU0NjczODkyNTg6MToxNzgwMzE2NzMyNDczIiwiZXhwaXJlZCI6MTc4MDMxNjczMjQ3MywiY3JlYXRlZCI6MTc3OTcxMTkzMjQ3MywidG9rZW5UeXBlIjoxLCJleHAiOjE3ODAzMTY3MzIsInVzZXJJZCI6NTQ2NzM4OTI1OH0.G21FcEKnbbewBa7HXYDFK82SrSnAYJb4wbozXKfCHFHAN5gXKr6GJZPKKQ8GB0cu8f9BWfq2N6hQNztgi5Ie3g",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "f6c797a0-d000-4539-993a-6d477e436726",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "214",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwvDCa9F5daXoAi3APtXZLLXb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwixP0WGV71Ovob0OzaAnSgTVmF2n1TiEoR8F6dy3eKF3HJJyysp4GnA6yOgeTMPCLISgmh4BfX8omQ536ha28/GXatG9uHHeCA",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 09:59:04 GMT",
+    "x-envoy-upstream-service-time": "41",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlsuATNCmV1nxAbDzShb+NZt/4Pds5hmxq"
+}
+'Raw response:', 'zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlsuATNCmV1nxAbDzShb+NZt/4Pds5hmxq'
+'Decrypted response:', '{"statusCode":5000,"status":"FAILED","message":"Insufficient funds"}'
+'Wallet adjustment FAILED:', 5000, 'Insufficient funds'
+POST https://bsnlapigateway.pyrogroup.com/auth-api/authentication: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53631
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "YTGHYGH3456UGH",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "04f44819-ee9d-4e5e-ae43-f80269eb0b85",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "64",
+    ":path": "/auth-api/authentication",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "dEFoSKVc0YKDH0CDhdmXxwhxZ2mLyyw+bhnlithOA4huYUabFC5T22H4UQ6iRGjT",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "application/json",
+    "date": "Wed, 27 May 2026 10:00:28 GMT",
+    "x-envoy-upstream-service-time": "8",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "{\"statusCode\":2000,\"status\":\"SUCCESS\",\"message\":\"authentication\",\"data\":{\"sessionToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MToxNzgwNDgwODI4MjI4IiwiZXhwaXJlZCI6MTc4MDQ4MDgyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0ODA4MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.xCUOJfz0ePPaLmGi8pFTZXEKq6ifdTrrZv7uQfApx32_bPzyRRmPSjXjaD9qmP1OSXjidztaaCADYvSmp50ssg\",\"accessToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MjoxNzc5ODc2OTI4MjI4IiwiZXhwaXJlZCI6MTc3OTg3NjkyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY5MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.qZo6LRRVCHWMg1Ela__4a2zmdP9lLp-hb_ASG8VK_S1NkGBEwnOgs6CNC1KjHJH7FNpNdYeNIf3zKw6_bXjUSg\",\"userName\":\"Walletless_User\"}}"
+}
+'Auth successful. User:', 'Walletless_User'
+'Client ID:', 'TEST76035373'
+'Plain Body:', '{"clientId":"TEST76035373","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":2,"mpin":"147258","remarks":"","serviceType":"SIMSWAP"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwiSjaR/4rG4LBOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwkuKHNhrf7hU9J/NSi9qKXFOTnWVUqKvoA0JhUIPnXr75LsU4g07OsqV2Bm7jENAedJWz4DmtiKOsD+NyfeOvd4'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53631
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "YTGHYGH3456UGH",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MjoxNzc5ODc2OTI4MjI4IiwiZXhwaXJlZCI6MTc3OTg3NjkyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY5MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.qZo6LRRVCHWMg1Ela__4a2zmdP9lLp-hb_ASG8VK_S1NkGBEwnOgs6CNC1KjHJH7FNpNdYeNIf3zKw6_bXjUSg",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MToxNzgwNDgwODI4MjI4IiwiZXhwaXJlZCI6MTc4MDQ4MDgyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0ODA4MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.xCUOJfz0ePPaLmGi8pFTZXEKq6ifdTrrZv7uQfApx32_bPzyRRmPSjXjaD9qmP1OSXjidztaaCADYvSmp50ssg",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "b000946c-8922-4cab-bffc-1f5ddc14bd79",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "203",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwiSjaR/4rG4LBOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwkuKHNhrf7hU9J/NSi9qKXFOTnWVUqKvoA0JhUIPnXr75LsU4g07OsqV2Bm7jENAedJWz4DmtiKOsD+NyfeOvd4",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 10:00:38 GMT",
+    "x-envoy-upstream-service-time": "3281",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GQXJZhBjK7jYjnaqkKNsowNCjhuNwv+txt+GXwhFlcrM9VQnm00xJBT7l/zBlVfreqMM1qONFKERX9Q0WowtWAenbWeETZjMwgsJDx4O/CGSrEjjvPONKdisRG/LRfhElB+mtvptDaZk5Vfw/2ZSoq0xrYzOdiYNTevGnOwB3nLOwhlQCrFL4HVbnAfTF9Vg+Dc8MKWcfyy7ykEB/z+d11feeVGC+dQHnE+21/Jg73K0CUsanStZLAWfiZ4o8HWdGwUltZORWWq0"
+}
+'Raw response:', 'zjwQdCvT3Oex1bxnT6o7G/hYOkZxeUy94pUrATkVWHfpE95fQ4EWS+FIKVClE58GQXJZhBjK7jYjnaqkKNsowNCjhuNwv+txt+GXwhFlcrM9VQnm00xJBT7l/zBlVfreqMM1qONFKERX9Q0WowtWAenbWeETZjMwgsJDx4O/CGSrEjjvPONKdisRG/LRfhElB+mtvptDaZk5Vfw/2ZSoq0xrYzOdiYNTevGnOwB3nLOwhlQCrFL4HVbnAfTF9Vg+Dc8MKWcfyy7ykEB/z+d11feeVGC+dQHnE+21/Jg73K0CUsanStZLAWfiZ4o8HWdGwUltZORWWq0'
+'Decrypted response:', '{"statusCode":2000,"status":"SUCCESS","message":"Transaction successful","data":{"pyroId":53909662,"timeStamp":"2026-05-27 15:30:38","clientId":"TEST76035373","sourceMsisdn":"8903696189","amount":2.0,"balanceBefore":292.28,"balanceAfter":290.28}}'
+'Wallet adjustment SUCCESS'
+'Pyro ID:', 53909662
+'Balance Before:', 292.28
+'Balance After:', 290.28
+'Client ID:', 'TEST76105488'
+'Plain Body:', '{"clientId":"TEST76105488","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":2,"mpin":"147259","remarks":"","serviceType":"SIMSWAP"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwphk6s7j2466NZI2pWUr7ITb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwkuKHNhrf7hU9J/NSi9qKXHYQ3HICfL/BQ0JhUIPnXr75LsU4g07OsqV2Bm7jENAedJWz4DmtiKOsD+NyfeOvd4'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53724
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "YTGHYGH3456UGH",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MjoxNzc5ODc2OTI4MjI4IiwiZXhwaXJlZCI6MTc3OTg3NjkyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY5MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.qZo6LRRVCHWMg1Ela__4a2zmdP9lLp-hb_ASG8VK_S1NkGBEwnOgs6CNC1KjHJH7FNpNdYeNIf3zKw6_bXjUSg",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MToxNzgwNDgwODI4MjI4IiwiZXhwaXJlZCI6MTc4MDQ4MDgyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0ODA4MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.xCUOJfz0ePPaLmGi8pFTZXEKq6ifdTrrZv7uQfApx32_bPzyRRmPSjXjaD9qmP1OSXjidztaaCADYvSmp50ssg",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "e82eef9a-f6db-41dc-ac46-f139d987d95e",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "203",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwphk6s7j2466NZI2pWUr7ITb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwkuKHNhrf7hU9J/NSi9qKXHYQ3HICfL/BQ0JhUIPnXr75LsU4g07OsqV2Bm7jENAedJWz4DmtiKOsD+NyfeOvd4",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 10:01:45 GMT",
+    "x-envoy-upstream-service-time": "17",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGljLSuiU6RTnV4VVHtOgn0IJojoyUfcJj/8IV+RflhOWIVT722R3HSED3mQfyeJScg"
+}
+'Raw response:', 'zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGljLSuiU6RTnV4VVHtOgn0IJojoyUfcJj/8IV+RflhOWIVT722R3HSED3mQfyeJScg'
+'Decrypted response:', '{"statusCode":5000,"status":"FAILED","message":"Invalid mpin for source msisdn: 8903696189"}'
+'Wallet adjustment FAILED:', 5000, 'Invalid mpin for source msisdn: 8903696189'
+'Client ID:', 'TEST76236853'
+'Plain Body:', '{"clientId":"TEST76236853","sourceMsisdn":"8903696189","destMsisdn":"9443400904","amount":2000,"mpin":"147258","remarks":"","serviceType":"SIMSWAP"}'
+'Encrypted Payload:', 'klpCMBxBbuSe76S+hroGwm9eKNg0jUf/BOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwnJsjZGjIUfCPyrpZs9bBsChZbMAb4Tm+L1N6PkGHOslk0g/ctaE3BqEoJoeAX1/KJPpQu++XuX1QfJPLwn1bmY'
+POST https://bsnlapigateway.pyrogroup.com/erp-stock-api/service-wallet-adjustment: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "10.44.0.55",
+        "family": "IPv4",
+        "port": 53890
+      },
+      "remote": {
+        "address": "10.44.24.20",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_128_GCM_SHA256",
+        "standardName": "TLS_AES_128_GCM_SHA256",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": null,
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": null,
+          "organizationalUnit": null,
+          "commonName": "*.pyrogroup.com",
+          "alternativeNames": "DNS:*.pyrogroup.com, DNS:pyrogroup.com"
+        },
+        "issuer": {
+          "country": "US",
+          "stateOrProvince": null,
+          "locality": null,
+          "organization": "Let's Encrypt",
+          "organizationalUnit": null,
+          "commonName": "R12"
+        },
+        "validFrom": "Mar 12 09:16:44 2026 GMT",
+        "validTo": "Jun 10 09:16:43 2026 GMT",
+        "fingerprint": "41:50:91:D0:5A:F1:02:68:1B:84:DF:E1:78:1F:14:CE:D6:74:39:7A",
+        "serialNumber": "06e0181e13537716116c087af24f16d17499"
+      }
+    }
+  },
+  "Request Headers": {
+    "apikey": "YTGHYGH3456UGH",
+    "accesstoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MjoxNzc5ODc2OTI4MjI4IiwiZXhwaXJlZCI6MTc3OTg3NjkyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoyLCJleHAiOjE3Nzk4NzY5MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.qZo6LRRVCHWMg1Ela__4a2zmdP9lLp-hb_ASG8VK_S1NkGBEwnOgs6CNC1KjHJH7FNpNdYeNIf3zKw6_bXjUSg",
+    "sessiontoken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyVHlwZUlkIjo5OSwic3ViIjoiODcyNjQzMDgyNiIsImF1ZCI6Ijg3MjY0MzA4MjY6MToxNzgwNDgwODI4MjI4IiwiZXhwaXJlZCI6MTc4MDQ4MDgyODIyOCwiY3JlYXRlZCI6MTc3OTg3NjAyODIyOCwidG9rZW5UeXBlIjoxLCJleHAiOjE3ODA0ODA4MjgsInVzZXJJZCI6ODcyNjQzMDgyNn0.xCUOJfz0ePPaLmGi8pFTZXEKq6ifdTrrZv7uQfApx32_bPzyRRmPSjXjaD9qmP1OSXjidztaaCADYvSmp50ssg",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.54.0",
+    "accept": "*/*",
+    "postman-token": "a5a8fbba-d1ed-4674-bd13-6d2348ad643f",
+    "accept-encoding": "gzip, deflate, br",
+    "content-length": "203",
+    ":path": "/erp-stock-api/service-wallet-adjustment",
+    ":method": "POST",
+    ":authority": "bsnlapigateway.pyrogroup.com",
+    ":scheme": "https"
+  },
+  "Request Body": "klpCMBxBbuSe76S+hroGwm9eKNg0jUf/BOyyKhOh2VPb/s56BLLxfbICkRKMFGoIn005+8x/PFGOY8cXiFMS5nbKM4O7oENFO/P6wK+K2sITjqX5JaeWwnJsjZGjIUfCPyrpZs9bBsChZbMAb4Tm+L1N6PkGHOslk0g/ctaE3BqEoJoeAX1/KJPpQu++XuX1QfJPLwn1bmY",
+  "Response Headers": {
+    ":status": 200,
+    "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers, Accept-Encoding",
+    "content-type": "text/plain;charset=UTF-8",
+    "date": "Wed, 27 May 2026 10:03:57 GMT",
+    "x-envoy-upstream-service-time": "45",
+    "content-encoding": "gzip",
+    "server": "envoy"
+  },
+  "Response Body": "zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlsuATNCmV1nxAbDzShb+NZt/4Pds5hmxq"
+}
+'Raw response:', 'zjwQdCvT3Of1BV3NShyZ4/hYOkZxeUy9N0fFcjEiVmR4edKmcnTm3sbJcVsyvfGlsuATNCmV1nxAbDzShb+NZt/4Pds5hmxq'
+'Decrypted response:', '{"statusCode":5000,"status":"FAILED","message":"Insufficient funds"}'
+'Wallet adjustment FAILED:', 5000, 'Insufficient funds'
